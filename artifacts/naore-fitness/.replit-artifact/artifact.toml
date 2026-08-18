@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "NAORE Fitness"
+description = "A premium Russian-language fitness platform landing site for trainers and athletes, with waitlist, support, FAQ, legal pages, and privacy-first conversion flows."
+version = "1.0.0"
+id = "artifacts/naore-fitness"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23916
+
+[services.development]
+run = "pnpm --filter @workspace/naore-fitness run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/naore-fitness", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/naore-fitness/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23916"
+BASE_PATH = "/"

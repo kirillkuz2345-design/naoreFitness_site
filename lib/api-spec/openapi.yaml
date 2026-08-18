@@ -1,0 +1,99 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: leads
+    description: Marketing and support lead capture
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /lead:
+    post:
+      operationId: submitLead
+      tags: [leads]
+      summary: Submit a waitlist or support lead
+      description: Accepts a marketing waitlist or support form submission for later CRM wiring.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeadInput"
+      responses:
+        "201":
+          description: Lead accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadAccepted"
+        "400":
+          description: Invalid lead data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    LeadInput:
+      type: object
+      properties:
+        kind:
+          type: string
+          enum: [waitlist, support]
+        name:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          pattern: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+        role:
+          type: string
+          enum: [тренер, атлет, не указано]
+        topic:
+          type: string
+        message:
+          type: string
+        product:
+          type: string
+      required: [kind, email]
+    LeadAccepted:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        message:
+          type: string
+      required: [ok, message]
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+
