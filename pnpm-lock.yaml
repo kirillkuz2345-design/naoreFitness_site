@@ -18,6 +18,9 @@ importers:
         specifier: workspace:*
         version: link:lib/leads
     devDependencies:
+      '@types/node':
+        specifier: ^25.3.3
+        version: 25.9.5
       '@vercel/node':
         specifier: ^3.2.29
         version: 3.2.29
