@@ -130,14 +130,14 @@ const features = [
 const trainerValues = ['Конструктор тренировок', 'Единый кабинет клиентов', 'Аналитика прогресса клиентов', 'Живой чат тренер↔клиент', 'Календарь и платежи'];
 const athleteValues = ['Персональная программа от тренера', 'Трекер тренировок и архив', 'Аналитика результатов по неделям', 'Калькулятор КБЖУ', 'Офлайн-доступ (PWA)'];
 
-function ValueBlock({ role, title, values, action, href, media, reverse = false }: { role: string; title: string; values: string[]; action: string; href: string; media: ReactNode; reverse?: boolean }) {
+function ValueBlock({ role, title, values, action, href, media, link, reverse = false }: { role: string; title: string; values: string[]; action: string; href: string; media: ReactNode; link?: [string, string]; reverse?: boolean }) {
   return <div className={`value-block ${reverse ? 'reverse' : ''}`}>
     <div className="value-media">{media}</div>
     <div className="value-body">
       <span className="value-role">{role}</span>
       <h3>{title}</h3>
       <div className="value-list">{values.map((value, i) => <div className="value-item" key={value}><span className="value-check"><Check size={13} /></span> <span data-testid={`text-value-${role}-${i}`}>{value}</span></div>)}</div>
-      <a href={href} className="btn btn-primary" data-testid={`button-value-${role}`}>{action} <ArrowRight size={16} /></a>
+      <div className="value-actions"><a href={href} className="btn btn-primary" data-testid={`button-value-${role}`}>{action} <ArrowRight size={16} /></a>{link && <Link className="value-more" href={link[1]} data-testid="value-more-link">{link[0]} <ArrowRight size={14} /></Link>}</div>
     </div>
   </div>;
 }
@@ -284,7 +284,7 @@ function Home() {
       <ValueBlock role="Для атлетов" title="Понятный план, видимый прогресс, поддержка тренера" values={athleteValues} action="Начать тренироваться" href={REGISTER_CLIENT} media={<MockAthlete />} />
     </div></section>
     <section className="section band" id="for-trainers"><div className="container-wide">
-      <ValueBlock role="Для тренеров" title="Ведите клиентов профессионально и масштабируйтесь" values={trainerValues} action="Стать тренером на NAORE" href={REGISTER_TRAINER} media={<MockTrainer />} reverse />
+      <ValueBlock role="Для тренеров" title="Ведите клиентов профессионально и масштабируйтесь" values={trainerValues} action="Стать тренером на NAORE" href={REGISTER_TRAINER} media={<MockTrainer />} link={['Конструктор тренировок для тренера', '/constructor']} reverse />
     </div></section>
 
     <section className="section" id="reviews"><div className="container-wide"><div className="section-head"><span className="eyebrow">Отзывы</span><h2 className="section-title">Что говорят пользователи</h2></div><Reviews /></div></section>
