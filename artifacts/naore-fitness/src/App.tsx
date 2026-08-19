@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { ArrowRight, BarChart3, Check, ChevronDown, CircleUserRound, Clock3, Database, Gauge, Headphones, Menu, MessageCircle, Radar, Send, ShieldCheck, X } from 'lucide-react';
+import { ArrowRight, CalendarDays, Check, ChevronDown, Clock3, Database, Dumbbell, Flame, Headphones, LineChart, Menu, MessageCircle, MessagesSquare, Send, Star, TrendingUp, X } from 'lucide-react';
 import { Link, Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
@@ -10,6 +10,11 @@ import NotFound from '@/pages/not-found';
 const queryClient = new QueryClient();
 
 const SITE_ORIGIN = 'https://naore.ru';
+
+// Платформа NAORE — регистрация с предвыбором роли (client — атлет, trainer — тренер)
+const REGISTER_URL = 'https://vibefitness-pearl.vercel.app/register';
+const REGISTER_CLIENT = `${REGISTER_URL}?role=client`;
+const REGISTER_TRAINER = `${REGISTER_URL}?role=trainer`;
 
 function usePageMeta(title: string, description: string) {
   useEffect(() => {
@@ -26,8 +31,7 @@ function usePageMeta(title: string, description: string) {
     };
     setMeta('description', description);
     setMeta('keywords', 'платформа для тренеров, приложение для тренировок, конструктор тренировок, онлайн-коучинг, калькулятор КБЖУ, трекер тренировок');
-    const url = SITE_ORIGIN + window.location.pathname.replace(/\/$/, '') + (window.location.pathname === '/' ? '' : '');
-    const canonical = window.location.pathname === '/' ? SITE_ORIGIN + '/' : url;
+    const canonical = window.location.pathname === '/' ? SITE_ORIGIN + '/' : SITE_ORIGIN + window.location.pathname.replace(/\/$/, '');
     setProp('og:title', title);
     setProp('og:description', description);
     setProp('og:url', canonical);
@@ -39,23 +43,28 @@ function usePageMeta(title: string, description: string) {
   }, [title, description]);
 }
 
+function Ph({ label, ratio = 'wide' }: { label: string; ratio?: 'wide' | 'photo' | 'square' }) {
+  return <div className={`ph r-${ratio}`} data-label={label} role="img" aria-label={label} />;
+}
+
 function Header() {
   const [open, setOpen] = useState(false);
-  return <header className="container-wide topbar">
-    <Link href="/" className="brand" data-testid="link-home"><span className="brand-mark"><span>N</span></span> NAORE <span style={{ color: 'hsl(var(--primary))' }}>FITNESS</span></Link>
+  return <header className="topbar">
+    <Link href="/" className="brand" data-testid="link-home"><span className="brand-mark"><span>N</span></span> NAORE</Link>
     <button className="mobile-menu" onClick={() => setOpen(!open)} aria-label="Открыть меню" aria-expanded={open} data-testid="button-mobile-menu">{open ? <X size={19} /> : <Menu size={19} />}</button>
     <nav className={`nav ${open ? 'open' : ''}`} aria-label="Основная навигация">
-      <a href="#for-trainers" onClick={() => setOpen(false)} data-testid="link-trainers">Тренерам</a>
+      <a href="#features" onClick={() => setOpen(false)} data-testid="link-features">Возможности</a>
       <a href="#for-athletes" onClick={() => setOpen(false)} data-testid="link-athletes">Атлетам</a>
-      <a href="#roadmap" onClick={() => setOpen(false)} data-testid="link-roadmap">Экосистема</a>
+      <a href="#for-trainers" onClick={() => setOpen(false)} data-testid="link-trainers">Тренерам</a>
+      <a href="#pricing" onClick={() => setOpen(false)} data-testid="link-pricing">Тарифы</a>
       <a href="#faq" onClick={() => setOpen(false)} data-testid="link-faq">FAQ</a>
-      <Link href="/support" className="nav-cta" data-testid="link-support">Поддержка <ArrowRight size={14} /></Link>
+      <a href={REGISTER_CLIENT} className="nav-cta" data-testid="link-register">Начать <ArrowRight size={14} /></a>
     </nav>
   </header>;
 }
 
 function ProductPreview() {
-  return <div className="product-visual" aria-label="Предпросмотр аналитики NAORE Fitness">
+  return <div className="product-visual" aria-label="Предпросмотр аналитики NAORE">
     <div className="app-frame">
       <div className="app-top"><span className="app-logo">NAORE / DASHBOARD</span><span className="app-status">СИСТЕМА В СЕТИ</span></div>
       <div className="app-body">
@@ -71,26 +80,105 @@ function ProductPreview() {
   </div>;
 }
 
-function SectionIntro({ eyebrow, title, copy, id }: { eyebrow: string; title: string; copy?: string; id?: string }) {
-  return <div id={id}><span className="eyebrow">{eyebrow}</span><h2 className="section-title">{title}</h2>{copy && <p className="section-copy">{copy}</p>}</div>;
-}
-
-// Платформа NAORE — регистрация с предвыбором роли (client — атлет, trainer — тренер)
-const REGISTER_URL = 'https://vibefitness-pearl.vercel.app/register';
-const REGISTER_CLIENT = `${REGISTER_URL}?role=client`;
-const REGISTER_TRAINER = `${REGISTER_URL}?role=trainer`;
-
-const trainerValues = ['Конструктор тренировок', 'Единый кабинет клиентов', 'Аналитика прогресса клиентов', 'Живой чат тренер↔клиент (комментарии к упражнениям)', 'Календарь и платежи'];
-const athleteValues = ['Персональная программа от тренера', 'Трекер тренировок и архив', 'Аналитика результатов по неделям', 'Калькулятор КБЖУ', 'Офлайн-доступ (PWA)'];
-
-function ValuePanel({ role, title, values, action, href, reverse = false }: { role: string; title: string; values: string[]; action: string; href: string; reverse?: boolean }) {
-  return <div className={`split-section ${reverse ? 'reverse' : ''}`}>
-    <SectionIntro eyebrow={role} title={title} />
-    <div className="role-panel"><span className="role-label">{role.toUpperCase()}</span><h3>Всё нужное для движения вперёд.</h3><div className="value-list">{values.map((value, index) => <div className="value-item" key={value}><Check size={16} /> <span data-testid={`text-value-${role}-${index}`}>{value}</span></div>)}</div><a href={href} className="btn btn-primary" data-testid={`button-${role}`}>{action} <ArrowRight size={15} /></a></div>
+function HeroVisual() {
+  return <div className="hero-visual">
+    <div className="float-card float-a"><span className="fc-ico"><Flame size={17} /></span><span><span className="fc-label">Серия</span><span className="fc-value">12 дней</span></span></div>
+    <div className="float-card float-b"><span className="fc-ico"><TrendingUp size={17} /></span><span><span className="fc-label">Прогресс</span><span className="fc-value">+8% за неделю</span></span></div>
+    <div className="float-card float-c"><span className="fc-ico"><Dumbbell size={17} /></span><span><span className="fc-label">Тренировка</span><span className="fc-value">Ноги / сила</span></span></div>
+    <ProductPreview />
   </div>;
 }
 
-function LeadForm({ compact = false, product = 'Поддержка', onDone }: { compact?: boolean; product?: string; onDone?: () => void }) {
+const marqueeItems = ['Конструктор тренировок', 'Аналитика прогресса', 'Живой чат тренер↔клиент', 'Календарь и платежи', 'Калькулятор КБЖУ', 'Офлайн-доступ (PWA)'];
+
+function Marquee() {
+  return <div className="marquee" aria-hidden="true"><div className="marquee-track">
+    {[0, 1].map((dup) => <div className="marquee-item" key={dup}>{marqueeItems.map((item) => <span key={item + dup}>{item} <b>/</b> </span>)}</div>)}
+  </div></div>;
+}
+
+const goals = [
+  { key: 'mass', tab: 'Набор массы', title: 'Растите силу и объём', copy: 'Прогрессивная нагрузка, подходы и веса под контролем. Тренер собирает программу, вы видите, как растут показатели неделя за неделей.', stats: [['500+', 'упражнений'], ['8 нед', 'видимый рост']], label: 'СКРИН: программа набора массы · 16:10' },
+  { key: 'cut', tab: 'Похудение', title: 'Снижайте вес системно', copy: 'Калькулятор КБЖУ и аналитика держат дефицит под контролем. Никаких догадок — только цифры и понятная динамика.', stats: [['КБЖУ', 'калькулятор'], ['7 дней', 'аналитика']], label: 'СКРИН: калькулятор КБЖУ · 16:10' },
+  { key: 'track', tab: 'Трекинг результатов', title: 'Каждая тренировка — в истории', copy: 'Полный архив тренировок и результатов. Работает офлайн (PWA) — данные всегда под рукой, даже без интернета.', stats: [['100%', 'история'], ['PWA', 'офлайн']], label: 'СКРИН: история тренировок · 16:10' },
+  { key: 'motivation', tab: 'Мотивация', title: 'Не бросайте на полпути', copy: 'Живой чат с тренером, комментарии к упражнениям и видимый прогресс держат в тонусе. Поддержка там, где проходит тренировка.', stats: [['24/7', 'чат с тренером'], ['↗', 'динамика']], label: 'СКРИН: чат тренер↔клиент · 16:10' },
+];
+
+function GoalTabs() {
+  const [index, setIndex] = useState(0);
+  const goal = goals[index];
+  return <>
+    <div className="goal-tabs" role="tablist">
+      {goals.map((g, i) => <button key={g.key} role="tab" aria-selected={i === index} className={`goal-tab ${i === index ? 'active' : ''}`} onClick={() => setIndex(i)} data-testid={`tab-goal-${g.key}`}>{g.tab}</button>)}
+    </div>
+    <div className="goal-panel">
+      <div className="goal-copy">
+        <h3>{goal.title}</h3>
+        <p>{goal.copy}</p>
+        <div className="goal-stats">{goal.stats.map(([value, label]) => <div className="goal-stat" key={label}><strong>{value}</strong><span>{label}</span></div>)}</div>
+        <a href={REGISTER_CLIENT} className="btn btn-primary" style={{ marginTop: 26 }} data-testid={`button-goal-${goal.key}`}>Начать бесплатно <ArrowRight size={16} /></a>
+      </div>
+      <Ph label={goal.label} ratio="wide" />
+    </div>
+  </>;
+}
+
+const features = [
+  { icon: Dumbbell, title: 'Конструктор тренировок', copy: 'Собирайте программы из упражнений — подходы, веса, расписание.', label: 'СКРИН: конструктор · 16:10' },
+  { icon: LineChart, title: 'Аналитика прогресса', copy: 'Динамика по неделям вместо ощущений: объём, выполнение, тренды.', label: 'СКРИН: аналитика · 16:10' },
+  { icon: MessagesSquare, title: 'Живой чат', copy: 'Комментарии к упражнениям и общение тренер↔клиент в тренировке.', label: 'СКРИН: чат · 16:10' },
+  { icon: CalendarDays, title: 'Календарь и платежи', copy: 'Расписание, напоминания и оплаты — в одном кабинете.', label: 'СКРИН: календарь · 16:10' },
+];
+
+const trainerValues = ['Конструктор тренировок', 'Единый кабинет клиентов', 'Аналитика прогресса клиентов', 'Живой чат тренер↔клиент', 'Календарь и платежи'];
+const athleteValues = ['Персональная программа от тренера', 'Трекер тренировок и архив', 'Аналитика результатов по неделям', 'Калькулятор КБЖУ', 'Офлайн-доступ (PWA)'];
+
+function ValueBlock({ role, title, values, action, href, mediaLabel, reverse = false }: { role: string; title: string; values: string[]; action: string; href: string; mediaLabel: string; reverse?: boolean }) {
+  return <div className={`value-block ${reverse ? 'reverse' : ''}`}>
+    <div className="value-media"><Ph label={mediaLabel} ratio="photo" /></div>
+    <div className="value-body">
+      <span className="value-role">{role}</span>
+      <h3>{title}</h3>
+      <div className="value-list">{values.map((value, i) => <div className="value-item" key={value}><span className="value-check"><Check size={13} /></span> <span data-testid={`text-value-${role}-${i}`}>{value}</span></div>)}</div>
+      <a href={href} className="btn btn-primary" data-testid={`button-value-${role}`}>{action} <ArrowRight size={16} /></a>
+    </div>
+  </div>;
+}
+
+const reviews = [
+  { name: 'Мария К.', handle: 'атлет', text: 'Наконец-то весь план, прогресс и переписка с тренером в одном месте. За два месяца — заметный результат.' },
+  { name: 'Дмитрий Р.', handle: 'тренер', text: 'Веду 20 клиентов без хаоса в мессенджерах. Конструктор и аналитика экономят часы каждую неделю.' },
+  { name: 'Анна С.', handle: 'атлет', text: 'Калькулятор КБЖУ и понятная динамика помогли не бросить. Всё под рукой, даже офлайн.' },
+];
+
+function Reviews() {
+  return <div className="reviews-track">
+    {reviews.map((r) => <div className="review-card" key={r.name}>
+      <div className="review-stars" aria-label="5 из 5">{[0, 1, 2, 3, 4].map((s) => <Star key={s} size={15} fill="currentColor" strokeWidth={0} />)}</div>
+      <p className="review-text">{r.text}</p>
+      <div className="review-user"><span className="ph-avatar">ФОТО</span><span><span className="review-name" style={{ display: 'block' }}>{r.name}</span><span className="review-handle">{r.handle}</span></span></div>
+    </div>)}
+  </div>;
+}
+
+const plans = [
+  { name: 'Старт', price: 'Бесплатно', note: '', href: REGISTER_CLIENT, cta: 'Начать бесплатно', featured: false, list: ['Личный профиль атлета', 'Трекер тренировок и архив', 'Калькулятор КБЖУ', 'Офлайн-доступ (PWA)'] },
+  { name: 'Pro', price: 'Скоро', note: 'ранний доступ', href: REGISTER_CLIENT, cta: 'В лист ожидания', featured: true, list: ['Всё из тарифа Старт', 'Расширенная аналитика', 'Персональная программа от тренера', 'Приоритетная поддержка'] },
+  { name: 'Тренер', price: 'Скоро', note: 'ранний доступ', href: REGISTER_TRAINER, cta: 'Стать тренером', featured: false, list: ['Единый кабинет клиентов', 'Конструктор тренировок', 'Аналитика клиентов', 'Календарь и платежи'] },
+];
+
+function Pricing() {
+  return <div className="pricing-grid">
+    {plans.map((p) => <div className={`plan ${p.featured ? 'featured' : ''}`} key={p.name}>
+      <div className="plan-name">{p.name}{p.featured && <span className="badge">Популярно</span>}</div>
+      <div className="plan-price">{p.price} {p.note && <small>{p.note}</small>}</div>
+      <ul className="plan-list">{p.list.map((item) => <li key={item}><Check size={16} /> <span>{item}</span></li>)}</ul>
+      <a href={p.href} className={`btn ${p.featured ? 'btn-primary' : 'btn-ghost'}`} data-testid={`button-plan-${p.name}`}>{p.cta} <ArrowRight size={16} /></a>
+    </div>)}
+  </div>;
+}
+
+function LeadForm({ product = 'Поддержка', onDone }: { product?: string; onDone?: () => void }) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
@@ -105,10 +193,9 @@ function LeadForm({ compact = false, product = 'Поддержка', onDone }: {
     } catch { setStatus('error'); setMessage('Не удалось отправить заявку. Попробуйте ещё раз или напишите нам напрямую.'); }
   };
   if (status === 'success') return <p className="form-message" role="status" data-testid={`status-success-${product}`}>{message}</p>;
-  return <form className={compact ? 'wait-form' : 'support-form'} onSubmit={submit} noValidate>
-    <label className="form-label"><span className="sr-only">Email</span><input className="field" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Ваш email" required aria-invalid={status === 'error'} data-testid={`input-email-${product}`} /></label>
+  return <form className="wait-form" onSubmit={submit} noValidate>
+    <label className="form-label" style={{ flex: 1 }}><span className="sr-only">Email</span><input className="field" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Ваш email" required aria-invalid={status === 'error'} data-testid={`input-email-${product}`} /></label>
     <button className="btn btn-primary btn-small" type="submit" disabled={status === 'loading'} data-testid={`button-waitlist-${product}`}>{status === 'loading' ? 'Отправка…' : 'В лист ожидания'} <ArrowRight size={14} /></button>
-    <p className="consent-note">Нажимая кнопку, вы соглашаетесь на обработку email согласно <Link href="/legal">Политике конфиденциальности</Link>.</p>
     {message && <p className="form-message error" role="alert" data-testid={`status-error-${product}`}>{message}</p>}
   </form>;
 }
@@ -131,7 +218,7 @@ function SupportForm() {
       setStatus('success');
     } catch { setStatus('error'); setError('Не удалось отправить сообщение. Проверьте соединение и попробуйте снова.'); }
   };
-  if (status === 'success') return <div className="role-panel" role="status"><Check size={26} className="usp-icon" /><h3>Сообщение отправлено.</h3><p className="section-copy">Мы рядом — отвечаем в течение 24 часов.</p></div>;
+  if (status === 'success') return <div className="review-card" role="status"><Check size={26} style={{ color: 'hsl(var(--primary))' }} /><h3 style={{ font: '600 24px var(--app-font-display)', margin: '14px 0 8px' }}>Сообщение отправлено.</h3><p className="section-copy">Мы рядом — отвечаем в течение 24 часов.</p></div>;
   return <form className="support-form" onSubmit={submit} noValidate>
     <input tabIndex={-1} aria-hidden="true" className="field" style={{ display: 'none' }} value={values.honey} onChange={(e) => update('honey', e.target.value)} />
     <div className="form-grid"><label className="form-label"><span>Имя</span><input className="field" value={values.name} onChange={(e) => update('name', e.target.value)} required data-testid="input-support-name" /></label><label className="form-label"><span>Email</span><input className="field" type="email" value={values.email} onChange={(e) => update('email', e.target.value)} required data-testid="input-support-email" /></label></div>
@@ -165,80 +252,98 @@ function CookieBanner() {
 }
 
 function Footer() {
-  return <footer className="footer"><div className="container-wide footer-grid"><div><Link href="/" className="brand"><span className="brand-mark"><span>N</span></span> NAORE <span style={{ color: 'hsl(var(--primary))' }}>FITNESS</span></Link><p className="footer-note">Платформа, где тренер и атлет работают на результат в одном месте.</p></div><div><h3>Навигация</h3><a href="#for-trainers">Тренерам</a><a href="#for-athletes">Атлетам</a><a href="#how">Как это работает</a><a href="#faq">FAQ</a></div><div><h3>Продукты</h3><a href="#roadmap">AI-Trainer <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Connect <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Shop <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Tematika <span className="badge">Скоро</span></a></div><div><h3>Контакты</h3><Link href="/support">Поддержка</Link><a href="mailto:support@naore.ru">support@naore.ru</a><a href="https://t.me/" target="_blank" rel="noreferrer">Telegram-чат</a><Link href="/legal">Правовая информация</Link></div></div><div className="container-wide footer-bottom"><span>© 2026 NAORE Fitness</span><span>Результат начинается с порядка.</span></div></footer>;
+  return <footer className="footer"><div className="container-wide footer-grid"><div><Link href="/" className="brand"><span className="brand-mark"><span>N</span></span> NAORE</Link><p className="footer-note">Платформа, где тренер и атлет работают на результат в одном месте.</p></div><div><h3>Навигация</h3><a href="#features">Возможности</a><a href="#for-athletes">Атлетам</a><a href="#for-trainers">Тренерам</a><a href="#pricing">Тарифы</a><a href="#faq">FAQ</a></div><div><h3>Продукты</h3><a href="#roadmap">AI-Trainer <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Connect <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Shop <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Tematika <span className="badge">Скоро</span></a></div><div><h3>Контакты</h3><Link href="/support">Поддержка</Link><a href="mailto:support@naore.ru">support@naore.ru</a><a href="https://t.me/" target="_blank" rel="noreferrer">Telegram-чат</a><Link href="/legal">Правовая информация</Link></div></div><div className="container-wide footer-bottom"><span>© 2026 NAORE Fitness</span><span>Результат начинается с порядка.</span></div></footer>;
 }
 
 function SupportSection() {
-  return <section className="section" id="support"><div className="container-wide support-card"><div><span className="eyebrow">Служба поддержки</span><h2 className="support-title">Поддержка NAORE — мы рядом на каждом шаге</h2><p className="section-copy">Отвечаем в течение 24 часов. Поможем тренерам с переносом клиентов.</p><div className="contact-lines"><a className="contact-line" href="mailto:support@naore.ru"><Headphones size={16} /> support@naore.ru</a><a className="contact-line" href="https://t.me/" target="_blank" rel="noreferrer"><MessageCircle size={16} /> Telegram-чат</a><Link className="contact-line" href="/support"><Database size={16} /> FAQ и база знаний <ArrowRight size={14} /></Link></div></div><SupportForm /></div></section>;
+  return <section className="section" id="support"><div className="container-wide support-card"><div><span className="eyebrow">Служба поддержки</span><h2 className="support-title">Мы рядом на каждом шаге</h2><p className="section-copy">Отвечаем в течение 24 часов. Поможем тренерам с переносом клиентов.</p><div className="contact-lines"><a className="contact-line" href="mailto:support@naore.ru"><Headphones size={16} /> support@naore.ru</a><a className="contact-line" href="https://t.me/" target="_blank" rel="noreferrer"><MessageCircle size={16} /> Telegram-чат</a><Link className="contact-line" href="/support"><Database size={16} /> FAQ и база знаний <ArrowRight size={14} /></Link></div></div><SupportForm /></div></section>;
 }
 
 function Home() {
   usePageMeta('NAORE Fitness — платформа для тренеров и атлетов', 'NAORE Fitness: конструктор тренировок, аналитика прогресса и живое общение тренер-клиент. Приложение для тренировок и онлайн-коучинга.');
   return <div className="site-shell noise"><a href="#main" className="skip-link">Перейти к содержанию</a><Header /><main id="main">
-    <section className="hero grid-lines"><div className="container-wide hero-grid"><div><span className="eyebrow">ПЛАТФОРМА ДЛЯ РЕЗУЛЬТАТА</span><h1>Тренер и атлет.<br /><em>В одном месте.</em></h1><p className="hero-sub">Конструктор тренировок, аналитика прогресса и живое общение тренер↔клиент. Без хаоса в мессенджерах.</p><div className="actions" id="start"><a href={REGISTER_CLIENT} className="btn btn-primary" data-testid="button-start-free">Начать бесплатно <ArrowRight size={16} /></a><a href={REGISTER_TRAINER} className="btn btn-ghost" data-testid="button-trainer-cabinet">Я тренер — завести кабинет</a></div><div className="trust-row"><span className="trust-item"><span className="trust-dot" /> Данные под защитой (RLS)</span><span className="trust-item"><span className="trust-dot" /> Работает офлайн (PWA)</span><span className="trust-item"><span className="trust-dot" /> Русскоязычная платформа</span></div></div><ProductPreview /></div></section>
-    <section className="section band"><div className="container-wide problem-grid"><SectionIntro eyebrow="Проблема → решение" title="Тренировки, планы и переписка больше не разбросаны по десяти приложениям" /><div className="problem-list"><div className="problem-card"><span className="number">01 / СТРУКТУРА</span><div><h3>Всё по плану</h3><p>Программа, упражнения и расписание собраны в одном кабинете.</p></div></div><div className="problem-card"><span className="number">02 / КОНТРОЛЬ</span><div><h3>Видимый прогресс</h3><p>Аналитика показывает динамику по неделям, а не оставляет ощущениям решать за вас.</p></div></div><div className="problem-card"><span className="number">03 / СВЯЗЬ</span><div><h3>Живая коммуникация</h3><p>Комментарии к упражнениям и общение тренера с клиентом — там, где проходит тренировка.</p></div></div></div></div></section>
-    <section className="section" id="for-trainers"><div className="container-wide"><ValuePanel role="Для тренеров" title="Тренерам: ведите клиентов профессионально и масштабируйтесь" values={trainerValues} action="Стать тренером на NAORE" href={REGISTER_TRAINER} /></div></section>
-    <section className="section band" id="for-athletes"><div className="container-wide"><ValuePanel role="Для атлетов" title="Атлетам: понятный план, видимый прогресс, поддержка тренера" values={athleteValues} action="Начать тренироваться" href={REGISTER_CLIENT} reverse /></div></section>
-    <section className="section" id="how"><div className="container-wide"><SectionIntro eyebrow="Как это работает" title="Три шага до системной тренировки" /><div className="steps"><div className="step"><span className="step-number">01</span><h3>Зарегистрируйтесь</h3><p>Выберите роль тренера или атлета и создайте свой профиль.</p></div><div className="step"><span className="step-number">02</span><h3>Соберите план</h3><p>Тренер собирает план / атлет получает программу.</p></div><div className="step"><span className="step-number">03</span><h3>Двигайтесь вперёд</h3><p>Тренируетесь, отслеживаете прогресс, общаетесь — всё в NAORE.</p></div></div></div></section>
-    <section className="section band"><div className="container-wide"><SectionIntro eyebrow="Почему NAORE" title="Система, которая держит фокус на результате" /><div className="usp-grid"><div className="usp"><CircleUserRound className="usp-icon" size={22} /><h3>Одна платформа для обеих сторон</h3><p>Тренер и атлет работают в одном пространстве.</p></div><div className="usp"><BarChart3 className="usp-icon" size={22} /><h3>Аналитика, а не ощущения</h3><p>Решения на основе аналитики прогресса.</p></div><div className="usp"><ShieldCheck className="usp-icon" size={22} /><h3>Приватность и безопасность</h3><p>Данные защищены правилами RLS.</p></div><div className="usp"><Gauge className="usp-icon" size={22} /><h3>Premium-опыт</h3><p>Быстрый, тёмный, PWA/офлайн.</p></div><div className="usp"><MessageCircle className="usp-icon" size={22} /><h3>Русскоязычная платформа</h3><p>Инструменты и поддержка на вашем языке.</p></div><div className="usp"><Radar className="usp-icon" size={22} /><h3>Активная дорожная карта</h3><p>Экосистема NAORE постоянно растёт.</p></div></div></div></section>
-    <section className="section" id="roadmap"><div className="container-wide"><div className="roadmap-head"><SectionIntro eyebrow="Дорожная карта" title="NAORE растёт — скоро в экосистеме" /><p className="section-copy">Мы постоянно добавляем инструменты. Оставьте почту — узнаете первыми и получите ранний доступ.</p></div><div className="roadmap-grid"><div className="roadmap-card"><span className="badge">Скоро</span><h3>AI-Trainer</h3><p>ИИ-тренер на базе особенностей вашего организма и целей подбирает эффективные упражнения под ваши тренировки.</p><LeadForm compact product="AI-Trainer" /></div><div className="roadmap-card"><span className="badge">Скоро</span><h3>NAORE Connect</h3><p>Отслеживайте показатели со спортивных аксессуаров — пульсометры, GPS-мониторинг атлета и другие датчики.</p><LeadForm compact product="NAORE Connect" /></div><div className="roadmap-card"><span className="badge">Скоро</span><h3>NAORE Shop</h3><p>Спортивное питание от партнёров, прошедшее лабораторную проверку под нашим контролем.</p><LeadForm compact product="NAORE Shop" /></div><div className="roadmap-card"><span className="badge">Скоро</span><h3>NAORE Tematika</h3><p>Пишите о своём деле, создавайте личный бренд и находите единомышленников — главная платформа для экспертов.</p><LeadForm compact product="NAORE Tematika" /></div></div></div></section>
-    <section className="section band" id="faq"><div className="container-wide"><SectionIntro eyebrow="FAQ" title="Коротко о главном" /><FAQ /></div></section><SupportSection />
-    <section className="final-cta grid-lines" id="final-cta"><div className="container-wide"><span className="eyebrow">Следующий подход</span><h2>Готовы тренироваться и вести клиентов по-новому?</h2><div className="actions" style={{ justifyContent: 'center' }}><a href={REGISTER_CLIENT} className="btn btn-primary" data-testid="button-final-start">Начать бесплатно <ArrowRight size={16} /></a><a href={REGISTER_TRAINER} className="btn btn-ghost" data-testid="button-final-trainer">Стать тренером</a></div></div></section>
+    <section className="hero grid-lines"><div className="container-wide hero-grid">
+      <div>
+        <div className="hero-badge"><b>NEW</b> Платформа тренер↔атлет</div>
+        <h1>Тренер и атлет.<br /><em>В одном месте.</em></h1>
+        <p className="hero-sub">Конструктор тренировок, аналитика прогресса и живое общение тренер↔клиент. Без хаоса в мессенджерах.</p>
+        <div className="actions" id="start"><a href={REGISTER_CLIENT} className="btn btn-primary" data-testid="button-start-free">Начать бесплатно <ArrowRight size={16} /></a><a href={REGISTER_TRAINER} className="btn btn-ghost" data-testid="button-trainer-cabinet">Я тренер — завести кабинет</a></div>
+        <div className="trust-row"><span className="trust-item"><span className="trust-dot" /> Данные под защитой (RLS)</span><span className="trust-item"><span className="trust-dot" /> Работает офлайн (PWA)</span><span className="trust-item"><span className="trust-dot" /> Русскоязычная платформа</span></div>
+      </div>
+      <HeroVisual />
+    </div></section>
+
+    <Marquee />
+
+    <section className="section statement"><div className="container-wide"><span className="eyebrow" style={{ justifyContent: 'center' }}>Один рабочий процесс</span><h2>Соберите план под цель — <em>и меняйте его на ходу.</em></h2></div></section>
+
+    <section className="section tight" id="goals"><div className="container-wide"><div className="section-head"><span className="eyebrow">Определите свою цель</span><h2 className="section-title">Одна платформа — под любую задачу</h2></div><GoalTabs /></div></section>
+
+    <section className="section band" id="features"><div className="container-wide"><div className="section-head"><span className="eyebrow">Возможности</span><h2 className="section-title">Всё для системной тренировки</h2><p className="section-copy">Конструктор, аналитика, чат и календарь — в одном кабинете, а не в десяти приложениях.</p></div>
+      <div className="feature-grid">{features.map((f) => { const Icon = f.icon; return <div className="feature-card" key={f.title}><Ph label={f.label} ratio="wide" /><div className="fc-body"><span className="value-check" style={{ marginBottom: 14 }}><Icon size={14} /></span><h3>{f.title}</h3><p>{f.copy}</p></div></div>; })}</div>
+    </div></section>
+
+    <section className="section" id="for-athletes"><div className="container-wide">
+      <ValueBlock role="Для атлетов" title="Понятный план, видимый прогресс, поддержка тренера" values={athleteValues} action="Начать тренироваться" href={REGISTER_CLIENT} mediaLabel="СКРИН: кабинет атлета · 4:5" />
+    </div></section>
+    <section className="section band" id="for-trainers"><div className="container-wide">
+      <ValueBlock role="Для тренеров" title="Ведите клиентов профессионально и масштабируйтесь" values={trainerValues} action="Стать тренером на NAORE" href={REGISTER_TRAINER} mediaLabel="СКРИН: кабинет тренера · 4:5" reverse />
+    </div></section>
+
+    <section className="section" id="reviews"><div className="container-wide"><div className="section-head"><span className="eyebrow">Отзывы</span><h2 className="section-title">Что говорят пользователи</h2></div><Reviews /></div></section>
+
+    <section className="section band" id="pricing"><div className="container-wide"><div className="section-head"><span className="eyebrow">Тарифы</span><h2 className="section-title">Начните бесплатно</h2><p className="section-copy">Старт — бесплатно. Расширенные тарифы для атлетов и тренеров — на подходе.</p></div><Pricing /></div></section>
+
+    <section className="section" id="roadmap"><div className="container-wide"><div className="roadmap-head"><span className="eyebrow" style={{ justifyContent: 'center' }}>Дорожная карта</span><h2 className="section-title" style={{ marginInline: 'auto' }}>NAORE растёт — скоро в экосистеме</h2><p className="section-copy">Оставьте почту — узнаете первыми и получите ранний доступ.</p></div>
+      <div className="roadmap-grid">
+        <div className="roadmap-card"><span className="badge">Скоро</span><h3>AI-Trainer</h3><p>ИИ-тренер на базе особенностей вашего организма и целей подбирает эффективные упражнения под ваши тренировки.</p><LeadForm product="AI-Trainer" /></div>
+        <div className="roadmap-card"><span className="badge">Скоро</span><h3>NAORE Connect</h3><p>Отслеживайте показатели со спортивных аксессуаров — пульсометры, GPS-мониторинг атлета и другие датчики.</p><LeadForm product="NAORE Connect" /></div>
+        <div className="roadmap-card"><span className="badge">Скоро</span><h3>NAORE Shop</h3><p>Спортивное питание от партнёров, прошедшее лабораторную проверку под нашим контролем.</p><LeadForm product="NAORE Shop" /></div>
+        <div className="roadmap-card"><span className="badge">Скоро</span><h3>NAORE Tematika</h3><p>Пишите о своём деле, создавайте личный бренд и находите единомышленников — главная платформа для экспертов.</p><LeadForm product="NAORE Tematika" /></div>
+      </div>
+    </div></section>
+
+    <section className="section band" id="faq"><div className="container-wide"><div className="section-head"><span className="eyebrow">FAQ</span><h2 className="section-title">Коротко о главном</h2></div><FAQ /></div></section>
+
+    <SupportSection />
+
+    <section className="section" id="final-cta"><div className="container-wide"><div className="cta-card"><span className="eyebrow" style={{ justifyContent: 'center' }}>Следующий подход</span><h2>Готовы тренироваться и вести клиентов по-новому?</h2><div className="cta-actions"><a href={REGISTER_CLIENT} className="btn btn-primary" data-testid="button-final-start">Начать бесплатно <ArrowRight size={16} /></a><a href={REGISTER_TRAINER} className="btn btn-ghost" data-testid="button-final-trainer">Стать тренером</a></div></div></div></section>
   </main><Footer /><CookieBanner /></div>;
 }
 
 function SupportPage() {
   usePageMeta('Поддержка NAORE Fitness — помощь тренерам и атлетам', 'Поддержка NAORE Fitness, FAQ и форма обратной связи для тренеров и атлетов.');
-  return <div className="site-shell noise"><Header /><main><div className="container-wide page-intro"><span className="eyebrow">NAORE / ПОДДЕРЖКА</span><h1>Разберёмся.<br /><span style={{ color: 'hsl(var(--primary))' }}>Без лишних слов.</span></h1><p className="section-copy">Мы рядом на каждом шаге. Отвечаем в течение 24 часов.</p></div><section className="section"><div className="container-wide support-card"><div><span className="eyebrow">Форма обратной связи</span><h2 className="support-title">Есть вопрос?<br />Напишите нам.</h2><p className="section-copy">Выберите роль, опишите тему и мы вернёмся с ответом.</p><div className="contact-lines"><a className="contact-line" href="mailto:support@naore.ru"><Headphones size={16} /> support@naore.ru</a><a className="contact-line" href="https://t.me/" target="_blank" rel="noreferrer"><MessageCircle size={16} /> Telegram-чат</a><span className="contact-line"><Clock3 size={16} /> Отвечаем в течение 24 часов</span></div></div><SupportForm /></div></section><section className="section band"><div className="container-wide"><SectionIntro eyebrow="FAQ / база знаний" title="Ответы на частые вопросы" /><FAQ /></div></section></main><Footer /><CookieBanner /></div>;
+  return <div className="site-shell noise"><Header /><main><div className="container-wide page-intro"><span className="eyebrow" style={{ justifyContent: 'center' }}>NAORE / Поддержка</span><h1>Разберёмся. <span>Без лишних слов.</span></h1><p className="section-copy">Мы рядом на каждом шаге. Отвечаем в течение 24 часов.</p></div><section className="section tight"><div className="container-wide support-card"><div><span className="eyebrow">Форма обратной связи</span><h2 className="support-title">Есть вопрос? Напишите нам.</h2><p className="section-copy">Выберите роль, опишите тему и мы вернёмся с ответом.</p><div className="contact-lines"><a className="contact-line" href="mailto:support@naore.ru"><Headphones size={16} /> support@naore.ru</a><a className="contact-line" href="https://t.me/" target="_blank" rel="noreferrer"><MessageCircle size={16} /> Telegram-чат</a><span className="contact-line"><Clock3 size={16} /> Отвечаем в течение 24 часов</span></div></div><SupportForm /></div></section><section className="section band"><div className="container-wide"><div className="section-head"><span className="eyebrow">FAQ / база знаний</span><h2 className="section-title">Ответы на частые вопросы</h2></div><FAQ /></div></section></main><Footer /><CookieBanner /></div>;
 }
 
 function LegalPage() {
   usePageMeta('Политика конфиденциальности NAORE Fitness', 'Политика обработки персональных данных (152-ФЗ), файлы cookie, согласие и реквизиты оператора NAORE Fitness.');
   const accent = { color: 'hsl(var(--primary))' };
   return <div className="site-shell noise"><Header /><main className="container-wide legal">
-    <span className="eyebrow">NAORE / ПРАВОВАЯ ИНФОРМАЦИЯ</span>
-    <h1>Прозрачно о<br /><span style={accent}>ваших данных.</span></h1>
+    <span className="eyebrow">NAORE / Правовая информация</span>
+    <h1>Прозрачно о <span>ваших данных.</span></h1>
     <p className="section-copy">Политика в отношении обработки персональных данных (далее — «Политика») определяет порядок обработки и защиты персональных данных пользователей сайта NAORE Fitness (далее — «Сайт») в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».</p>
     <p className="legal-note" data-testid="text-legal-requisites">⚠️ Реквизиты оператора нужно заполнить перед публикацией: Оператор — [ИП/ООО «___»], ИНН [___], ОГРН/ОГРНИП [___], адрес [___], email support@naore.ru. Дата вступления в силу: [дата].</p>
-
     <h2>1. Оператор персональных данных</h2>
     <p>Оператором персональных данных является [ИП/ООО «___»], ИНН [___], ОГРН/ОГРНИП [___], адрес: [___] (далее — «Оператор»). Контакт по вопросам обработки данных: <a href="mailto:support@naore.ru" style={accent}>support@naore.ru</a>.</p>
-
     <h2>2. Какие данные мы обрабатываем</h2>
     <p>Оператор обрабатывает только те данные, которые вы добровольно передаёте через формы Сайта:</p>
-    <ul>
-      <li>имя;</li>
-      <li>адрес электронной почты (email);</li>
-      <li>роль (тренер или атлет);</li>
-      <li>тема и текст обращения;</li>
-      <li>интересующий продукт (при подписке на лист ожидания).</li>
-    </ul>
+    <ul><li>имя;</li><li>адрес электронной почты (email);</li><li>роль (тренер или атлет);</li><li>тема и текст обращения;</li><li>интересующий продукт (при подписке на лист ожидания).</li></ul>
     <p>Специальные и биометрические категории персональных данных не собираются. Сайт не предназначен для лиц младше 18 лет без согласия законных представителей.</p>
-
     <h2>3. Цели обработки</h2>
-    <ul>
-      <li>ответ на обращение и связь с вами по теме NAORE Fitness;</li>
-      <li>информирование о запуске продуктов и раннем доступе (при подписке на лист ожидания);</li>
-      <li>улучшение работы Сайта и качества поддержки.</li>
-    </ul>
-
+    <ul><li>ответ на обращение и связь с вами по теме NAORE Fitness;</li><li>информирование о запуске продуктов и раннем доступе (при подписке на лист ожидания);</li><li>улучшение работы Сайта и качества поддержки.</li></ul>
     <h2>4. Правовые основания и согласие</h2>
     <p>Правовым основанием обработки является ваше согласие, выражаемое путём отметки соответствующего чекбокса и/или отправки формы, а также законные интересы Оператора по обработке обращений. Отправляя форму, вы подтверждаете согласие на обработку указанных персональных данных в перечисленных выше целях.</p>
     <p>Вы вправе отозвать согласие в любой момент, направив запрос на <a href="mailto:support@naore.ru" style={accent}>support@naore.ru</a>. После отзыва Оператор прекращает обработку и удаляет данные, если нет иных законных оснований для их хранения.</p>
-
     <h2>5. Хранение, передача и защита</h2>
     <p>Обращения с Сайта доставляются Оператору через мессенджер Telegram и хранятся не дольше, чем это необходимо для целей обработки, после чего удаляются. Оператор не продаёт персональные данные и не передаёт их третьим лицам, за исключением случаев, предусмотренных законодательством РФ. Для доставки сообщений используется сервис Telegram (Telegram FZ-LLC).</p>
     <p>Оператор принимает технические и организационные меры для защиты данных от неправомерного доступа, изменения, раскрытия или уничтожения. Доступ к данным платформы ограничивается правилами разграничения доступа (RLS).</p>
-
     <h2>6. Права субъекта персональных данных</h2>
     <p>В соответствии со ст. 14 152-ФЗ вы имеете право: получать сведения об обработке ваших данных; требовать их уточнения, блокирования или уничтожения в случае неполноты, неточности или неправомерной обработки; отозвать согласие; обжаловать действия Оператора в Роскомнадзоре или в суде. Для реализации прав направьте запрос на <a href="mailto:support@naore.ru" style={accent}>support@naore.ru</a>.</p>
-
     <h2>7. Файлы cookie</h2>
     <p>Сайт использует только необходимые файлы cookie, обеспечивающие его работу (например, сохранение вашего выбора в баннере cookie). Аналитические и рекламные cookie не включаются без вашего согласия. Управлять выбором можно в баннере при первом посещении; настройки браузера также позволяют ограничить использование cookie.</p>
-
     <h2>8. Изменения Политики</h2>
     <p>Оператор вправе изменять настоящую Политику. Актуальная редакция всегда доступна на этой странице. Существенные изменения вступают в силу с момента публикации.</p>
-
     <h2>9. Условия использования</h2>
     <p>Материалы Сайта предоставляются для ознакомления с платформой NAORE Fitness. Функции и продукты дорожной карты могут появляться поэтапно; перед подключением отдельных функций условия будут обозначены отдельно.</p>
     <p>По вопросам обработки данных напишите на <a href="mailto:support@naore.ru" style={accent}>support@naore.ru</a>.</p>
