@@ -121,10 +121,10 @@ function GoalTabs() {
 }
 
 const features = [
-  { icon: Dumbbell, Mock: MockConstructor, title: 'Конструктор тренировок', copy: 'Собирайте программы из упражнений — подходы, веса, расписание.', label: 'СКРИН: конструктор · 16:10' },
-  { icon: LineChart, Mock: MockAnalytics, title: 'Аналитика прогресса', copy: 'Динамика по неделям вместо ощущений: объём, выполнение, тренды.', label: 'СКРИН: аналитика · 16:10' },
-  { icon: MessagesSquare, Mock: MockChat, title: 'Живой чат', copy: 'Комментарии к упражнениям и общение тренер↔клиент в тренировке.', label: 'СКРИН: чат · 16:10' },
-  { icon: CalendarDays, Mock: MockCalendar, title: 'Календарь и платежи', copy: 'Расписание, напоминания и оплаты — в одном кабинете.', label: 'СКРИН: календарь · 16:10' },
+  { icon: Dumbbell, Mock: MockConstructor, href: '/constructor', title: 'Конструктор тренировок', copy: 'Собирайте программы из упражнений — подходы, веса, расписание.', label: 'СКРИН: конструктор · 16:10' },
+  { icon: LineChart, Mock: MockAnalytics, href: '/analytics', title: 'Аналитика прогресса', copy: 'Динамика по неделям вместо ощущений: объём, выполнение, тренды.', label: 'СКРИН: аналитика · 16:10' },
+  { icon: MessagesSquare, Mock: MockChat, href: '/communication', title: 'Живой чат', copy: 'Комментарии к упражнениям и общение тренер↔клиент в тренировке.', label: 'СКРИН: чат · 16:10' },
+  { icon: CalendarDays, Mock: MockCalendar, href: '/crm', title: 'Календарь и платежи', copy: 'Расписание, напоминания и оплаты — в одном кабинете.', label: 'СКРИН: календарь · 16:10' },
 ];
 
 const trainerValues = ['Конструктор тренировок', 'Единый кабинет клиентов', 'Аналитика прогресса клиентов', 'Живой чат тренер↔клиент', 'Календарь и платежи'];
@@ -277,7 +277,7 @@ function Home() {
     <section className="section tight" id="goals"><div className="container-wide"><div className="section-head"><span className="eyebrow">Определите свою цель</span><h2 className="section-title">Одна платформа — под любую задачу</h2></div><GoalTabs /></div></section>
 
     <section className="section band" id="features"><div className="container-wide"><div className="section-head"><span className="eyebrow">Возможности</span><h2 className="section-title">Всё для системной тренировки</h2><p className="section-copy">Конструктор, аналитика, чат и календарь — в одном кабинете, а не в десяти приложениях.</p></div>
-      <div className="feature-grid">{features.map((f) => { const Icon = f.icon; return <div className="feature-card" key={f.title}><f.Mock ratio="wide" /><div className="fc-body"><span className="value-check" style={{ marginBottom: 14 }}><Icon size={14} /></span><h3>{f.title}</h3><p>{f.copy}</p></div></div>; })}</div>
+      <div className="feature-grid">{features.map((f) => { const Icon = f.icon; return <Link className="feature-card" href={f.href} key={f.title} data-testid={`feature-${f.href}`}><f.Mock ratio="wide" /><div className="fc-body"><span className="value-check" style={{ marginBottom: 14 }}><Icon size={14} /></span><h3>{f.title}</h3><p>{f.copy}</p><span className="fc-more">Подробнее <ArrowRight size={13} /></span></div></Link>; })}</div>
     </div></section>
 
     <section className="section" id="for-athletes"><div className="container-wide">
