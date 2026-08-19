@@ -287,6 +287,24 @@ function Home() {
       <ValueBlock role="Для тренеров" title="Ведите клиентов профессионально и масштабируйтесь" values={trainerValues} action="Стать тренером на NAORE" href={REGISTER_TRAINER} media={<MockTrainer />} link={['Конструктор тренировок для тренера', '/constructor']} reverse />
     </div></section>
 
+    <section className="section" id="trainer-constructor"><div className="container-wide">
+      <div className="goal-panel">
+        <div className="goal-copy">
+          <span className="value-role">Конструктор тренировок</span>
+          <h3>Конструктор тренировок для тренера</h3>
+          <p>Собирайте персональные программы из упражнений — подходы, веса, расписание. Готовая тренировка за пару минут, шаблоны для повторного использования и назначение клиентам.</p>
+          <div className="value-list">
+            <div className="value-item"><span className="value-check"><Check size={13} /></span> <span>Создание тренировки за несколько минут</span></div>
+            <div className="value-item"><span className="value-check"><Check size={13} /></span> <span>Персональная программа под каждого клиента</span></div>
+            <div className="value-item"><span className="value-check"><Check size={13} /></span> <span>Библиотека упражнений и шаблоны</span></div>
+            <div className="value-item"><span className="value-check"><Check size={13} /></span> <span>Назначение клиентам и история результатов</span></div>
+          </div>
+          <div className="value-actions"><a href={REGISTER_TRAINER} className="btn btn-primary" data-testid="button-constructor-cta">Создать первую тренировку <ArrowRight size={16} /></a><Link className="value-more" href="/constructor" data-testid="link-constructor-more">Подробнее о конструкторе <ArrowRight size={14} /></Link></div>
+        </div>
+        <MockConstructor ratio="wide" />
+      </div>
+    </div></section>
+
     <section className="section" id="reviews"><div className="container-wide"><div className="section-head"><span className="eyebrow">Отзывы</span><h2 className="section-title">Что говорят пользователи</h2></div><Reviews /></div></section>
 
     <section className="section band" id="pricing"><div className="container-wide"><div className="section-head"><span className="eyebrow">Тарифы</span><h2 className="section-title">Начните бесплатно</h2><p className="section-copy">Старт — бесплатно. Расширенные тарифы для атлетов и тренеров — на подходе.</p></div><Pricing /></div></section>
