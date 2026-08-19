@@ -13,6 +13,22 @@
   <url><loc>https://naore-fitness-site.vercel.app/automation</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://naore-fitness-site.vercel.app/client</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://naore-fitness-site.vercel.app/online-training</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://naore-fitness-site.vercel.app/support</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://naore-fitness-site.vercel.app/legal</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/kak-vesti-klientov</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/avtomatizaciya-raboty-trenera</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/kak-sostavit-programmu-trenirovok</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/kak-otslezhivat-progress-klienta</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/kak-vesti-mnogo-klientov</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/kak-uyti-ot-excel</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/crm-dlya-fitnes-trenera</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/excel-ili-crm</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/rabota-onlayn-trenera</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/informaciya-o-klientah-v-messendzherah</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/chem-zamenit-whatsapp</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/dnevnik-trenirovok</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/kak-analizirovat-progress</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/luchshie-programmy-dlya-trenerov</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/blog/luchshie-crm-dlya-trenerov</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>
