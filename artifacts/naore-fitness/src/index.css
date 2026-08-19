@@ -400,3 +400,21 @@ textarea.field { padding-top: 12px; min-height: 130px; resize: vertical; }
 .mk-hero b { color: hsl(var(--foreground)); font: 600 12px var(--app-font-display); }
 .mk-hero span { color: hsl(var(--muted-foreground)); font-size: 9px; }
 .mk-line { height: 5px; border-radius: 3px; background: hsl(var(--muted-foreground) / .14); }
+
+/* ============ Product landing pages ============ */
+.lp-top { padding: 40px 0 10px; }
+.lp-hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
+.lp-hero h1 { font: 600 clamp(2.1rem, 4.4vw, 3.7rem)/1.03 var(--app-font-display); letter-spacing: -.05em; margin: 16px 0 20px; }
+.lp-hero p { color: hsl(var(--muted-foreground)); font-size: 18px; line-height: 1.6; max-width: 520px; margin: 0 0 30px; }
+.lp-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+.lp-card { border: 1px solid hsl(var(--border-soft)); border-radius: 18px; background: hsl(var(--surface) / .6); padding: 26px; transition: border-color .2s ease, transform .2s ease; }
+.lp-card:hover { border-color: hsl(var(--primary) / .35); transform: translateY(-3px); }
+.lp-card h3 { font: 600 18px var(--app-font-display); letter-spacing: -.02em; margin: 0 0 8px; }
+.lp-card p { color: hsl(var(--muted-foreground)); font-size: 14px; line-height: 1.6; margin: 0; }
+.lp-related { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; justify-content: center; }
+.lp-related a { display: inline-flex; align-items: center; gap: 7px; padding: 11px 18px; border: 1px solid hsl(var(--border-soft)); border-radius: 999px; background: hsl(var(--surface) / .6); color: hsl(var(--foreground)); text-decoration: none; font: 600 13px var(--app-font-sans); transition: border-color .2s ease, color .2s ease; }
+.lp-related a:hover { border-color: hsl(var(--primary) / .5); color: hsl(var(--primary)); }
+@media (max-width: 860px) {
+  .lp-hero, .lp-sections { grid-template-columns: 1fr; gap: 36px; }
+  .lp-sections { gap: 14px; }
+}
