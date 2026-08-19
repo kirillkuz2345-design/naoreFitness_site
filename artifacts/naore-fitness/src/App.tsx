@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, ReactNode, useEffect, useState } from 'react';
 import { ArrowRight, CalendarDays, Check, ChevronDown, Clock3, Database, Dumbbell, Flame, Headphones, LineChart, Menu, MessageCircle, MessagesSquare, Send, Star, TrendingUp, X } from 'lucide-react';
 import { Link, Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -6,6 +6,7 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
+import { MockAnalytics, MockAthlete, MockAvatar, MockCalendar, MockChat, MockConstructor, MockHistory, MockKbju, MockTrainer } from './mockups';
 
 const queryClient = new QueryClient();
 
@@ -41,10 +42,6 @@ function usePageMeta(title: string, description: string) {
     if (!link) { link = document.createElement('link'); link.setAttribute('rel', 'canonical'); document.head.appendChild(link); }
     link.setAttribute('href', canonical);
   }, [title, description]);
-}
-
-function Ph({ label, ratio = 'wide' }: { label: string; ratio?: 'wide' | 'photo' | 'square' }) {
-  return <div className={`ph r-${ratio}`} data-label={label} role="img" aria-label={label} />;
 }
 
 function Header() {
@@ -98,10 +95,10 @@ function Marquee() {
 }
 
 const goals = [
-  { key: 'mass', tab: 'Набор массы', title: 'Растите силу и объём', copy: 'Прогрессивная нагрузка, подходы и веса под контролем. Тренер собирает программу, вы видите, как растут показатели неделя за неделей.', stats: [['500+', 'упражнений'], ['8 нед', 'видимый рост']], label: 'СКРИН: программа набора массы · 16:10' },
-  { key: 'cut', tab: 'Похудение', title: 'Снижайте вес системно', copy: 'Калькулятор КБЖУ и аналитика держат дефицит под контролем. Никаких догадок — только цифры и понятная динамика.', stats: [['КБЖУ', 'калькулятор'], ['7 дней', 'аналитика']], label: 'СКРИН: калькулятор КБЖУ · 16:10' },
-  { key: 'track', tab: 'Трекинг результатов', title: 'Каждая тренировка — в истории', copy: 'Полный архив тренировок и результатов. Работает офлайн (PWA) — данные всегда под рукой, даже без интернета.', stats: [['100%', 'история'], ['PWA', 'офлайн']], label: 'СКРИН: история тренировок · 16:10' },
-  { key: 'motivation', tab: 'Мотивация', title: 'Не бросайте на полпути', copy: 'Живой чат с тренером, комментарии к упражнениям и видимый прогресс держат в тонусе. Поддержка там, где проходит тренировка.', stats: [['24/7', 'чат с тренером'], ['↗', 'динамика']], label: 'СКРИН: чат тренер↔клиент · 16:10' },
+  { key: 'mass', Mock: MockConstructor, tab: 'Набор массы', title: 'Растите силу и объём', copy: 'Прогрессивная нагрузка, подходы и веса под контролем. Тренер собирает программу, вы видите, как растут показатели неделя за неделей.', stats: [['500+', 'упражнений'], ['8 нед', 'видимый рост']], label: 'СКРИН: программа набора массы · 16:10' },
+  { key: 'cut', Mock: MockKbju, tab: 'Похудение', title: 'Снижайте вес системно', copy: 'Калькулятор КБЖУ и аналитика держат дефицит под контролем. Никаких догадок — только цифры и понятная динамика.', stats: [['КБЖУ', 'калькулятор'], ['7 дней', 'аналитика']], label: 'СКРИН: калькулятор КБЖУ · 16:10' },
+  { key: 'track', Mock: MockHistory, tab: 'Трекинг результатов', title: 'Каждая тренировка — в истории', copy: 'Полный архив тренировок и результатов. Работает офлайн (PWA) — данные всегда под рукой, даже без интернета.', stats: [['100%', 'история'], ['PWA', 'офлайн']], label: 'СКРИН: история тренировок · 16:10' },
+  { key: 'motivation', Mock: MockChat, tab: 'Мотивация', title: 'Не бросайте на полпути', copy: 'Живой чат с тренером, комментарии к упражнениям и видимый прогресс держат в тонусе. Поддержка там, где проходит тренировка.', stats: [['24/7', 'чат с тренером'], ['↗', 'динамика']], label: 'СКРИН: чат тренер↔клиент · 16:10' },
 ];
 
 function GoalTabs() {
@@ -118,24 +115,24 @@ function GoalTabs() {
         <div className="goal-stats">{goal.stats.map(([value, label]) => <div className="goal-stat" key={label}><strong>{value}</strong><span>{label}</span></div>)}</div>
         <a href={REGISTER_CLIENT} className="btn btn-primary" style={{ marginTop: 26 }} data-testid={`button-goal-${goal.key}`}>Начать бесплатно <ArrowRight size={16} /></a>
       </div>
-      <Ph label={goal.label} ratio="wide" />
+      <goal.Mock ratio="wide" />
     </div>
   </>;
 }
 
 const features = [
-  { icon: Dumbbell, title: 'Конструктор тренировок', copy: 'Собирайте программы из упражнений — подходы, веса, расписание.', label: 'СКРИН: конструктор · 16:10' },
-  { icon: LineChart, title: 'Аналитика прогресса', copy: 'Динамика по неделям вместо ощущений: объём, выполнение, тренды.', label: 'СКРИН: аналитика · 16:10' },
-  { icon: MessagesSquare, title: 'Живой чат', copy: 'Комментарии к упражнениям и общение тренер↔клиент в тренировке.', label: 'СКРИН: чат · 16:10' },
-  { icon: CalendarDays, title: 'Календарь и платежи', copy: 'Расписание, напоминания и оплаты — в одном кабинете.', label: 'СКРИН: календарь · 16:10' },
+  { icon: Dumbbell, Mock: MockConstructor, title: 'Конструктор тренировок', copy: 'Собирайте программы из упражнений — подходы, веса, расписание.', label: 'СКРИН: конструктор · 16:10' },
+  { icon: LineChart, Mock: MockAnalytics, title: 'Аналитика прогресса', copy: 'Динамика по неделям вместо ощущений: объём, выполнение, тренды.', label: 'СКРИН: аналитика · 16:10' },
+  { icon: MessagesSquare, Mock: MockChat, title: 'Живой чат', copy: 'Комментарии к упражнениям и общение тренер↔клиент в тренировке.', label: 'СКРИН: чат · 16:10' },
+  { icon: CalendarDays, Mock: MockCalendar, title: 'Календарь и платежи', copy: 'Расписание, напоминания и оплаты — в одном кабинете.', label: 'СКРИН: календарь · 16:10' },
 ];
 
 const trainerValues = ['Конструктор тренировок', 'Единый кабинет клиентов', 'Аналитика прогресса клиентов', 'Живой чат тренер↔клиент', 'Календарь и платежи'];
 const athleteValues = ['Персональная программа от тренера', 'Трекер тренировок и архив', 'Аналитика результатов по неделям', 'Калькулятор КБЖУ', 'Офлайн-доступ (PWA)'];
 
-function ValueBlock({ role, title, values, action, href, mediaLabel, reverse = false }: { role: string; title: string; values: string[]; action: string; href: string; mediaLabel: string; reverse?: boolean }) {
+function ValueBlock({ role, title, values, action, href, media, reverse = false }: { role: string; title: string; values: string[]; action: string; href: string; media: ReactNode; reverse?: boolean }) {
   return <div className={`value-block ${reverse ? 'reverse' : ''}`}>
-    <div className="value-media"><Ph label={mediaLabel} ratio="photo" /></div>
+    <div className="value-media">{media}</div>
     <div className="value-body">
       <span className="value-role">{role}</span>
       <h3>{title}</h3>
@@ -156,7 +153,7 @@ function Reviews() {
     {reviews.map((r) => <div className="review-card" key={r.name}>
       <div className="review-stars" aria-label="5 из 5">{[0, 1, 2, 3, 4].map((s) => <Star key={s} size={15} fill="currentColor" strokeWidth={0} />)}</div>
       <p className="review-text">{r.text}</p>
-      <div className="review-user"><span className="ph-avatar">ФОТО</span><span><span className="review-name" style={{ display: 'block' }}>{r.name}</span><span className="review-handle">{r.handle}</span></span></div>
+      <div className="review-user"><MockAvatar name={r.name} /><span><span className="review-name" style={{ display: 'block' }}>{r.name}</span><span className="review-handle">{r.handle}</span></span></div>
     </div>)}
   </div>;
 }
@@ -280,14 +277,14 @@ function Home() {
     <section className="section tight" id="goals"><div className="container-wide"><div className="section-head"><span className="eyebrow">Определите свою цель</span><h2 className="section-title">Одна платформа — под любую задачу</h2></div><GoalTabs /></div></section>
 
     <section className="section band" id="features"><div className="container-wide"><div className="section-head"><span className="eyebrow">Возможности</span><h2 className="section-title">Всё для системной тренировки</h2><p className="section-copy">Конструктор, аналитика, чат и календарь — в одном кабинете, а не в десяти приложениях.</p></div>
-      <div className="feature-grid">{features.map((f) => { const Icon = f.icon; return <div className="feature-card" key={f.title}><Ph label={f.label} ratio="wide" /><div className="fc-body"><span className="value-check" style={{ marginBottom: 14 }}><Icon size={14} /></span><h3>{f.title}</h3><p>{f.copy}</p></div></div>; })}</div>
+      <div className="feature-grid">{features.map((f) => { const Icon = f.icon; return <div className="feature-card" key={f.title}><f.Mock ratio="wide" /><div className="fc-body"><span className="value-check" style={{ marginBottom: 14 }}><Icon size={14} /></span><h3>{f.title}</h3><p>{f.copy}</p></div></div>; })}</div>
     </div></section>
 
     <section className="section" id="for-athletes"><div className="container-wide">
-      <ValueBlock role="Для атлетов" title="Понятный план, видимый прогресс, поддержка тренера" values={athleteValues} action="Начать тренироваться" href={REGISTER_CLIENT} mediaLabel="СКРИН: кабинет атлета · 4:5" />
+      <ValueBlock role="Для атлетов" title="Понятный план, видимый прогресс, поддержка тренера" values={athleteValues} action="Начать тренироваться" href={REGISTER_CLIENT} media={<MockAthlete />} />
     </div></section>
     <section className="section band" id="for-trainers"><div className="container-wide">
-      <ValueBlock role="Для тренеров" title="Ведите клиентов профессионально и масштабируйтесь" values={trainerValues} action="Стать тренером на NAORE" href={REGISTER_TRAINER} mediaLabel="СКРИН: кабинет тренера · 4:5" reverse />
+      <ValueBlock role="Для тренеров" title="Ведите клиентов профессионально и масштабируйтесь" values={trainerValues} action="Стать тренером на NAORE" href={REGISTER_TRAINER} media={<MockTrainer />} reverse />
     </div></section>
 
     <section className="section" id="reviews"><div className="container-wide"><div className="section-head"><span className="eyebrow">Отзывы</span><h2 className="section-title">Что говорят пользователи</h2></div><Reviews /></div></section>
