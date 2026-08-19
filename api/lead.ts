@@ -1,36 +1,67 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { z } from "zod";
 
 /**
  * POST /api/lead — accepts a waitlist or support submission and delivers it to
- * Telegram. Telegram is the "database": there is no persistent store, leads are
- * pushed to the configured chat via the Bot API.
+ * Telegram. Telegram is the "database": leads are pushed to the configured chat
+ * via the Bot API, there is no persistent store.
  *
- * Self-contained on purpose: serverless functions run compiled JS, so this file
- * does not import workspace TypeScript-source packages (@workspace/*). It only
- * depends on `zod` and Node/Web globals.
+ * Zero runtime dependencies on purpose: serverless functions run compiled JS
+ * and this file imports only `@vercel/node` types (compile-time). Validation is
+ * done by hand so nothing needs to be resolved/required at runtime.
  *
  * Env (Vercel → Settings → Environment Variables):
  *   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
  */
 
-const emailRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const SubmitLeadBody = z.object({
-  kind: z.enum(["waitlist", "support"]),
-  name: z.string().min(1).optional(),
-  email: z.string().regex(emailRegExp),
-  role: z.enum(["тренер", "атлет", "не указано"]).optional(),
-  topic: z.string().optional(),
-  message: z.string().optional(),
-  product: z.string().optional(),
-});
-
-type Lead = z.infer<typeof SubmitLeadBody>;
-
 const TELEGRAM_API_BASE = "https://api.telegram.org";
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const KINDS = ["waitlist", "support"] as const;
+const ROLES = ["тренер", "атлет", "не указано"] as const;
 
-const kindLabels: Record<Lead["kind"], string> = {
+type Kind = (typeof KINDS)[number];
+
+interface Lead {
+  kind: Kind;
+  email: string;
+  name?: string;
+  role?: string;
+  topic?: string;
+  message?: string;
+  product?: string;
+}
+
+function optionalString(value: unknown): string | undefined {
+  return typeof value === "string" && value.length > 0 ? value : undefined;
+}
+
+/** Validates the request body by hand and returns a normalized Lead or null. */
+function parseLead(body: unknown): Lead | null {
+  if (typeof body !== "object" || body === null) return null;
+  const b = body as Record<string, unknown>;
+
+  const kind = b["kind"];
+  if (typeof kind !== "string" || !KINDS.includes(kind as Kind)) return null;
+
+  const email = b["email"];
+  if (typeof email !== "string" || !EMAIL_RE.test(email)) return null;
+
+  const role = optionalString(b["role"]);
+  if (role !== undefined && !ROLES.includes(role as (typeof ROLES)[number])) {
+    return null;
+  }
+
+  return {
+    kind: kind as Kind,
+    email,
+    name: optionalString(b["name"]),
+    role,
+    topic: optionalString(b["topic"]),
+    message: optionalString(b["message"]),
+    product: optionalString(b["product"]),
+  };
+}
+
+const kindLabels: Record<Kind, string> = {
   waitlist: "Лист ожидания",
   support: "Поддержка",
 };
@@ -57,12 +88,7 @@ function formatLeadMessage(lead: Lead): string {
   return lines.join("\n");
 }
 
-interface TelegramConfig {
-  botToken: string;
-  chatId: string;
-}
-
-function getTelegramConfig(): TelegramConfig | null {
+function getTelegramConfig(): { botToken: string; chatId: string } | null {
   const botToken = process.env["TELEGRAM_BOT_TOKEN"];
   const chatId = process.env["TELEGRAM_CHAT_ID"];
   if (!botToken || !chatId) return null;
@@ -71,12 +97,11 @@ function getTelegramConfig(): TelegramConfig | null {
 
 async function sendLeadToTelegram(
   lead: Lead,
-  config: TelegramConfig,
+  config: { botToken: string; chatId: string },
 ): Promise<void> {
   const url = `${TELEGRAM_API_BASE}/bot${config.botToken}/sendMessage`;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 10_000);
-
   try {
     const response = await fetch(url, {
       method: "POST",
@@ -89,7 +114,6 @@ async function sendLeadToTelegram(
       }),
       signal: controller.signal,
     });
-
     if (!response.ok) {
       const details = await response.text().catch(() => "");
       throw new Error(
@@ -111,8 +135,18 @@ export default async function handler(
     return;
   }
 
-  const parsed = SubmitLeadBody.safeParse(req.body);
-  if (!parsed.success) {
+  // Vercel parses JSON bodies automatically, but be defensive if it arrives raw.
+  let body: unknown = req.body;
+  if (typeof body === "string") {
+    try {
+      body = JSON.parse(body);
+    } catch {
+      body = undefined;
+    }
+  }
+
+  const lead = parseLead(body);
+  if (!lead) {
     res
       .status(400)
       .json({ error: "Проверьте заполнение формы и попробуйте ещё раз." });
@@ -132,9 +166,9 @@ export default async function handler(
   }
 
   try {
-    await sendLeadToTelegram(parsed.data, config);
+    await sendLeadToTelegram(lead, config);
   } catch (err) {
-    console.error("Failed to deliver lead to Telegram", err, parsed.data);
+    console.error("Failed to deliver lead to Telegram", err);
     res.status(502).json({
       error:
         "Не удалось отправить заявку. Попробуйте ещё раз или напишите на support@naore.ru.",
