@@ -10,7 +10,7 @@ import { MockAnalytics, MockAthlete, MockAvatar, MockCalendar, MockChat, MockCon
 
 const queryClient = new QueryClient();
 
-const SITE_ORIGIN = 'https://naore.ru';
+const SITE_ORIGIN = 'https://naore-fitness-site.vercel.app';
 
 // Платформа NAORE — регистрация с предвыбором роли (client — атлет, trainer — тренер)
 const REGISTER_URL = 'https://vibefitness-pearl.vercel.app/register';
