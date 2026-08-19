@@ -7,6 +7,12 @@
   <url><loc>https://naore-fitness-site.vercel.app/analytics</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://naore-fitness-site.vercel.app/progress</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://naore-fitness-site.vercel.app/communication</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/personal-trainer</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/online-trainer</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/workout-diary</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/automation</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/client</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://naore-fitness-site.vercel.app/online-training</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://naore-fitness-site.vercel.app/support</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://naore-fitness-site.vercel.app/legal</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

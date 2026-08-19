@@ -249,7 +249,7 @@ function CookieBanner() {
 }
 
 function Footer() {
-  return <footer className="footer"><div className="container-wide footer-grid"><div><Link href="/" className="brand"><span className="brand-mark"><span>N</span></span> NAORE</Link><p className="footer-note">Платформа, где тренер и атлет работают на результат в одном месте.</p></div><div><h3>Возможности</h3><Link href="/constructor">Конструктор тренировок</Link><Link href="/clients">Ведение клиентов</Link><Link href="/crm">CRM для тренера</Link><Link href="/analytics">Аналитика прогресса</Link><Link href="/progress">Отслеживание прогресса</Link><Link href="/communication">Коммуникация</Link></div><div><h3>Продукты</h3><a href="#roadmap">AI-Trainer <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Connect <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Shop <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Tematika <span className="badge">Скоро</span></a></div><div><h3>Контакты</h3><Link href="/support">Поддержка</Link><a href="mailto:support@naore.ru">support@naore.ru</a><a href="https://t.me/" target="_blank" rel="noreferrer">Telegram-чат</a><Link href="/legal">Правовая информация</Link></div></div><div className="container-wide footer-bottom"><span>© 2026 NAORE Fitness</span><span>Результат начинается с порядка.</span></div></footer>;
+  return <footer className="footer"><div className="container-wide footer-grid"><div><Link href="/" className="brand"><span className="brand-mark"><span>N</span></span> NAORE</Link><p className="footer-note">Платформа, где тренер и атлет работают на результат в одном месте.</p></div><div><h3>Возможности</h3><Link href="/constructor">Конструктор тренировок</Link><Link href="/clients">Ведение клиентов</Link><Link href="/crm">CRM для тренера</Link><Link href="/analytics">Аналитика прогресса</Link><Link href="/progress">Отслеживание прогресса</Link><Link href="/communication">Коммуникация</Link><Link href="/personal-trainer">Персональный тренер</Link><Link href="/online-trainer">Онлайн-тренер</Link><Link href="/workout-diary">Дневник тренировок</Link><Link href="/automation">Автоматизация</Link><Link href="/client">Для клиента</Link><Link href="/online-training">Онлайн-тренировки</Link></div><div><h3>Продукты</h3><a href="#roadmap">AI-Trainer <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Connect <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Shop <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Tematika <span className="badge">Скоро</span></a></div><div><h3>Контакты</h3><Link href="/support">Поддержка</Link><a href="mailto:support@naore.ru">support@naore.ru</a><a href="https://t.me/" target="_blank" rel="noreferrer">Telegram-чат</a><Link href="/legal">Правовая информация</Link></div></div><div className="container-wide footer-bottom"><span>© 2026 NAORE Fitness</span><span>Результат начинается с порядка.</span></div></footer>;
 }
 
 function SupportSection() {
@@ -349,7 +349,7 @@ function LegalPage() {
 
 function Router() {
   const [location] = useLocation();
-  return <ErrorBoundary resetKey={location}><Switch><Route path="/" component={Home} /><Route path="/support" component={SupportPage} /><Route path="/legal" component={LegalPage} /><Route path="/constructor"><ProductLanding page={productPages.constr} /></Route><Route path="/clients"><ProductLanding page={productPages.clients} /></Route><Route path="/crm"><ProductLanding page={productPages.crm} /></Route><Route path="/analytics"><ProductLanding page={productPages.analytics} /></Route><Route path="/progress"><ProductLanding page={productPages.progress} /></Route><Route path="/communication"><ProductLanding page={productPages.communication} /></Route><Route component={NotFound} /></Switch></ErrorBoundary>;
+  return <ErrorBoundary resetKey={location}><Switch><Route path="/" component={Home} /><Route path="/support" component={SupportPage} /><Route path="/legal" component={LegalPage} /><Route path="/constructor"><ProductLanding page={productPages.constr} /></Route><Route path="/clients"><ProductLanding page={productPages.clients} /></Route><Route path="/crm"><ProductLanding page={productPages.crm} /></Route><Route path="/analytics"><ProductLanding page={productPages.analytics} /></Route><Route path="/progress"><ProductLanding page={productPages.progress} /></Route><Route path="/communication"><ProductLanding page={productPages.communication} /></Route><Route path="/personal-trainer"><ProductLanding page={productPages.personalTrainer} /></Route><Route path="/online-trainer"><ProductLanding page={productPages.onlineTrainer} /></Route><Route path="/workout-diary"><ProductLanding page={productPages.workoutDiary} /></Route><Route path="/automation"><ProductLanding page={productPages.automation} /></Route><Route path="/client"><ProductLanding page={productPages.client} /></Route><Route path="/online-training"><ProductLanding page={productPages.onlineTraining} /></Route><Route component={NotFound} /></Switch></ErrorBoundary>;
 }
 
 function App() {
@@ -463,6 +463,107 @@ const productPages: Record<string, {
     ],
     related: [['Ведение клиентов', '/clients'], ['Конструктор тренировок', '/constructor'], ['CRM для тренера', '/crm']],
   },
+  personalTrainer: {
+    eyebrow: 'Персональный тренер',
+    title: 'Программа для персонального тренера — клиенты и тренировки',
+    description: 'Управляйте клиентами, создавайте персональные программы и контролируйте прогресс в одном сервисе.',
+    h1: 'Рабочее пространство персонального тренера',
+    intro: 'Клиенты, персональные программы, прогресс и общение — в одном сервисе, без Excel и десятков чатов.',
+    ctaLabel: 'Начать работу', ctaHref: REGISTER_TRAINER, mock: <MockTrainer />,
+    sections: [
+      ['Ведите всех клиентов в одном месте', 'Единая база клиентов вместо таблиц и чатов: статусы, цели и история — под рукой.'],
+      ['Создавайте персональные программы', 'Собирайте план под каждого клиента в конструкторе — за минуты, а не за вечер.'],
+      ['Контролируйте выполнение', 'Видно, какие тренировки выполнены, а какие пропущены. Дисциплина — в цифрах.'],
+      ['Отслеживайте прогресс', 'Динамика результатов по неделям помогает вовремя корректировать нагрузку.'],
+      ['Общайтесь с клиентами', 'Комментарии и сообщения рядом с тренировками — без потери контекста.'],
+      ['Работайте без Excel и десятков чатов', 'Один рабочий центр вместо разрозненных инструментов.'],
+    ],
+    related: [['Ведение клиентов', '/clients'], ['Конструктор тренировок', '/constructor'], ['Аналитика прогресса', '/analytics']],
+  },
+  onlineTrainer: {
+    eyebrow: 'Онлайн-тренер',
+    title: 'Программа для онлайн-тренера — ведение клиентов дистанционно',
+    description: 'Ведите онлайн-клиентов, назначайте тренировки, отслеживайте прогресс и общайтесь в одном сервисе.',
+    h1: 'Всё для работы онлайн-тренера',
+    intro: 'Ведите клиентов дистанционно: программы, назначения, прогресс и общение — в одном рабочем пространстве.',
+    ctaLabel: 'Начать работу', ctaHref: REGISTER_TRAINER, mock: <MockTrainer />,
+    sections: [
+      ['Ведение клиентов онлайн', 'Работайте с клиентами дистанционно: вся информация о каждом — в одной карточке.'],
+      ['Тренировочные программы', 'Собирайте и переиспользуйте программы под цель клиента.'],
+      ['Назначение тренировок', 'Назначайте тренировки на даты — клиент видит актуальный план, файлы не теряются.'],
+      ['Контроль выполнения', 'Отмечайте и отслеживайте выполнение без напоминаний в мессенджерах.'],
+      ['Аналитика прогресса', 'Динамика результатов помогает вести клиента к цели по данным.'],
+      ['Как масштабировать онлайн-практику', 'Меньше рутины на клиента — больше клиентов без потери качества.'],
+    ],
+    related: [['Ведение клиентов', '/clients'], ['Коммуникация', '/communication'], ['Автоматизация', '/automation']],
+  },
+  workoutDiary: {
+    eyebrow: 'Дневник тренировок',
+    title: 'Дневник тренировок онлайн — история и прогресс',
+    description: 'Ведите историю тренировок, сохраняйте результаты и отслеживайте прогресс вместе с тренером.',
+    h1: 'Дневник тренировок с историей прогресса',
+    intro: 'Записывайте тренировки, храните результаты и следите за прогрессом — под рукой, даже офлайн (PWA).',
+    ctaLabel: 'Начать вести дневник', ctaHref: REGISTER_CLIENT, mock: <MockHistory ratio="wide" />,
+    sections: [
+      ['Записывайте каждую тренировку', 'Фиксируйте упражнения, подходы и веса. Ничего не забывается.'],
+      ['Сохраняйте результаты', 'Результаты остаются в истории и превращаются в динамику.'],
+      ['Отслеживайте изменения', 'Видите рост показателей на графиках, а не в ощущениях.'],
+      ['Смотрите историю тренировок', 'Полный архив под рукой, даже без интернета (PWA).'],
+      ['Делитесь результатами с тренером', 'Тренер видит те же данные и корректирует план.'],
+      ['Как дневник связан с аналитикой', 'Записи автоматически складываются в аналитику прогресса.'],
+    ],
+    related: [['Отслеживание прогресса', '/progress'], ['Аналитика прогресса', '/analytics'], ['Конструктор тренировок', '/constructor']],
+  },
+  automation: {
+    eyebrow: 'Автоматизация',
+    title: 'Автоматизация работы фитнес-тренера',
+    description: 'Автоматизируйте ведение клиентов, программы тренировок, прогресс и коммуникацию. Освободите время для работы с клиентами.',
+    h1: 'Автоматизируйте рутину — занимайтесь клиентами',
+    intro: 'Меньше ручного переноса данных между Excel и мессенджерами — больше времени на реальную работу с клиентами.',
+    ctaLabel: 'Автоматизировать работу', ctaHref: REGISTER_TRAINER, mock: <MockTrainer />,
+    sections: [
+      ['Что можно автоматизировать', 'Рутину вокруг клиентов, программ, прогресса и общения — в одном сервисе.'],
+      ['Клиенты', 'База клиентов и статусы обновляются по мере работы.'],
+      ['Тренировки', 'Переиспользуйте программы-шаблоны вместо сборки с нуля.'],
+      ['Прогресс', 'Результаты собираются автоматически и превращаются в аналитику.'],
+      ['Коммуникация', 'Контекст клиента под рукой — меньше повторяющихся вопросов.'],
+      ['Сколько времени получает тренер', 'Освободите часы в неделю на реальную работу с клиентами.'],
+    ],
+    related: [['CRM для тренера', '/crm'], ['Ведение клиентов', '/clients'], ['Конструктор тренировок', '/constructor']],
+  },
+  client: {
+    eyebrow: 'Для клиента',
+    title: 'Приложение для клиентов фитнес-тренера',
+    description: 'Получайте тренировки, отмечайте выполнение, отслеживайте прогресс и общайтесь с тренером в одном приложении.',
+    h1: 'Ваша тренировка, прогресс и тренер — в одном месте',
+    intro: 'Получайте программу от тренера, отмечайте выполнение, следите за прогрессом и общайтесь — в одном приложении.',
+    ctaLabel: 'Открыть приложение', ctaHref: REGISTER_CLIENT, mock: <MockAthlete />,
+    sections: [
+      ['Получайте программу тренировок', 'Тренер назначает план — он всегда актуален и под рукой.'],
+      ['Отмечайте выполнение', 'Отмечайте выполненные тренировки в пару касаний.'],
+      ['Смотрите свой прогресс', 'Динамика результатов — на понятных графиках.'],
+      ['Общайтесь с тренером', 'Вопросы и обратная связь рядом с упражнениями.'],
+      ['Храните историю тренировок', 'Весь архив сохраняется и работает офлайн (PWA).'],
+    ],
+    related: [['Отслеживание прогресса', '/progress'], ['Дневник тренировок', '/workout-diary'], ['Коммуникация', '/communication']],
+  },
+  onlineTraining: {
+    eyebrow: 'Онлайн-тренировки',
+    title: 'Платформа для онлайн-тренировок и работы тренера',
+    description: 'Проводите онлайн-тренировки, ведите клиентов, назначайте программы и контролируйте прогресс в одном сервисе.',
+    h1: 'Платформа для онлайн-тренировок',
+    intro: 'Проводите онлайн-тренировки, ведите клиентов, назначайте программы и контролируйте прогресс — в одном сервисе.',
+    ctaLabel: 'Начать работу', ctaHref: REGISTER_TRAINER, mock: <MockConstructor ratio="wide" />,
+    sections: [
+      ['Работа с клиентами онлайн', 'Ведите клиентов дистанционно: карточки, цели и история — в одном месте.'],
+      ['Тренировочные программы', 'Собирайте программы под цель и переиспользуйте их.'],
+      ['Контроль выполнения', 'Видно, кто выполняет план, а кому нужна корректировка.'],
+      ['Аналитика прогресса', 'Динамика результатов ведёт клиента к цели по данным.'],
+      ['Коммуникация', 'Общение рядом с тренировками — без хаоса в мессенджерах.'],
+    ],
+    related: [['Онлайн-тренер', '/online-trainer'], ['Конструктор тренировок', '/constructor'], ['Ведение клиентов', '/clients']],
+  },
+
 };
 
 function ProductLanding({ page }: { page: (typeof productPages)[string] }) {
