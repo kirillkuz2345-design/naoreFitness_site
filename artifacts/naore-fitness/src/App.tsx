@@ -31,7 +31,7 @@ function usePageMeta(title: string, description: string) {
       tag.setAttribute('content', content);
     };
     setMeta('description', description);
-    setMeta('keywords', 'платформа для тренеров, приложение для тренировок, конструктор тренировок, онлайн-коучинг, калькулятор КБЖУ, трекер тренировок');
+    setMeta('keywords', 'платформа для фитнес тренера, программа для фитнес тренера, приложение для фитнес тренера, сервис для фитнес тренера, конструктор тренировок, ведение клиентов, CRM для фитнес тренера, аналитика прогресса клиентов');
     const canonical = window.location.pathname === '/' ? SITE_ORIGIN + '/' : SITE_ORIGIN + window.location.pathname.replace(/\/$/, '');
     setProp('og:title', title);
     setProp('og:description', description);
@@ -257,14 +257,14 @@ function SupportSection() {
 }
 
 function Home() {
-  usePageMeta('NAORE Fitness — платформа для тренеров и атлетов', 'NAORE Fitness: конструктор тренировок, аналитика прогресса и живое общение тренер-клиент. Приложение для тренировок и онлайн-коучинга.');
+  usePageMeta('Платформа для фитнес-тренеров — тренировки, клиенты и аналитика', 'Создавайте тренировки, ведите клиентов, отслеживайте прогресс и общайтесь в одном сервисе. Без хаоса в мессенджерах.');
   return <div className="site-shell noise"><a href="#main" className="skip-link">Перейти к содержанию</a><Header /><main id="main">
     <section className="hero grid-lines"><div className="container-wide hero-grid">
       <div>
-        <div className="hero-badge"><b>NEW</b> Платформа тренер↔атлет</div>
-        <h1>Тренер и атлет.<br /><em>В одном месте.</em></h1>
-        <p className="hero-sub">Конструктор тренировок, аналитика прогресса и живое общение тренер↔клиент. Без хаоса в мессенджерах.</p>
-        <div className="actions" id="start"><a href={REGISTER_CLIENT} className="btn btn-primary" data-testid="button-start-free">Начать бесплатно <ArrowRight size={16} /></a><a href={REGISTER_TRAINER} className="btn btn-ghost" data-testid="button-trainer-cabinet">Я тренер — завести кабинет</a></div>
+        <div className="hero-badge"><b>NEW</b> Платформа для фитнес-тренеров</div>
+        <h1>Всё для работы тренера<br />с клиентами — <em>в одном месте.</em></h1>
+        <p className="hero-sub">Создавайте тренировки, ведите клиентов, отслеживайте прогресс и общайтесь — в одном сервисе. Без хаоса в мессенджерах.</p>
+        <div className="actions" id="start"><a href={REGISTER_TRAINER} className="btn btn-primary" data-testid="button-start-free">Попробовать бесплатно <ArrowRight size={16} /></a><a href={REGISTER_CLIENT} className="btn btn-ghost" data-testid="button-trainer-cabinet">Я атлет — тренироваться</a></div>
         <div className="trust-row"><span className="trust-item"><span className="trust-dot" /> Данные под защитой (RLS)</span><span className="trust-item"><span className="trust-dot" /> Работает офлайн (PWA)</span><span className="trust-item"><span className="trust-dot" /> Русскоязычная платформа</span></div>
       </div>
       <HeroVisual />
@@ -272,7 +272,7 @@ function Home() {
 
     <Marquee />
 
-    <section className="section statement"><div className="container-wide"><span className="eyebrow" style={{ justifyContent: 'center' }}>Один рабочий процесс</span><h2>Соберите план под цель — <em>и меняйте его на ходу.</em></h2></div></section>
+    <section className="section statement"><div className="container-wide"><span className="eyebrow" style={{ justifyContent: 'center' }}>Один рабочий процесс</span><h2>Тренировки, клиенты и прогресс — <em>в одном рабочем пространстве.</em></h2></div></section>
 
     <section className="section tight" id="goals"><div className="container-wide"><div className="section-head"><span className="eyebrow">Определите свою цель</span><h2 className="section-title">Одна платформа — под любую задачу</h2></div><GoalTabs /></div></section>
 

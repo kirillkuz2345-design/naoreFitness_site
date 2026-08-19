@@ -24,10 +24,10 @@
     <text x="26" y="35" text-anchor="middle" font-size="28" font-weight="700" fill="#0a0d14">N</text>
     <text x="72" y="36" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="-1">NAORE</text>
   </g>
-  <text x="80" y="300" font-size="82" font-weight="700" fill="#ffffff" letter-spacing="-3">Тренер и атлет.</text>
-  <text x="80" y="392" font-size="82" font-weight="700" fill="#00e676" letter-spacing="-3">В одном месте.</text>
-  <text x="80" y="470" font-size="30" fill="#a9b0bd">Конструктор тренировок, аналитика прогресса</text>
-  <text x="80" y="512" font-size="30" fill="#a9b0bd">и живое общение тренер—клиент.</text>
+  <text x="80" y="300" font-size="82" font-weight="700" fill="#ffffff" letter-spacing="-3">Платформа для</text>
+  <text x="80" y="392" font-size="82" font-weight="700" fill="#00e676" letter-spacing="-3">фитнес-тренеров.</text>
+  <text x="80" y="470" font-size="30" fill="#a9b0bd">Тренировки, клиенты, прогресс и общение —</text>
+  <text x="80" y="512" font-size="30" fill="#a9b0bd">в одном рабочем пространстве.</text>
   <g transform="translate(80,556)" font-size="22" fill="#8a92a0">
     <circle cx="6" cy="-7" r="5" fill="#00e676"/>
     <text x="22" y="0">Данные под защитой (RLS)</text>
