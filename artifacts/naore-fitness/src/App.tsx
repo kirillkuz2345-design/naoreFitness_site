@@ -367,6 +367,14 @@ function LegalPage() {
 
 function Router() {
   const [location] = useLocation();
+  useEffect(() => {
+    // Сброс прокрутки наверх при смене маршрута (мгновенно, без smooth).
+    const html = document.documentElement;
+    const prev = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 0);
+    html.style.scrollBehavior = prev;
+  }, [location]);
   return <ErrorBoundary resetKey={location}><Switch><Route path="/" component={Home} /><Route path="/support" component={SupportPage} /><Route path="/legal" component={LegalPage} /><Route path="/constructor"><ProductLanding page={productPages.constr} /></Route><Route path="/clients"><ProductLanding page={productPages.clients} /></Route><Route path="/crm"><ProductLanding page={productPages.crm} /></Route><Route path="/analytics"><ProductLanding page={productPages.analytics} /></Route><Route path="/progress"><ProductLanding page={productPages.progress} /></Route><Route path="/communication"><ProductLanding page={productPages.communication} /></Route><Route path="/personal-trainer"><ProductLanding page={productPages.personalTrainer} /></Route><Route path="/online-trainer"><ProductLanding page={productPages.onlineTrainer} /></Route><Route path="/workout-diary"><ProductLanding page={productPages.workoutDiary} /></Route><Route path="/automation"><ProductLanding page={productPages.automation} /></Route><Route path="/client"><ProductLanding page={productPages.client} /></Route><Route path="/online-training"><ProductLanding page={productPages.onlineTraining} /></Route><Route component={NotFound} /></Switch></ErrorBoundary>;
 }
 
