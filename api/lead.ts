@@ -1,19 +1,17 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import https from "node:https";
 
 /**
  * POST /api/lead — accepts a waitlist or support submission and delivers it to
- * Telegram. Telegram is the "database": leads are pushed to the configured chat
- * via the Bot API, there is no persistent store.
+ * Telegram via the Bot API. Telegram is the "database"; there is no store.
  *
- * Zero runtime dependencies on purpose: serverless functions run compiled JS
- * and this file imports only `@vercel/node` types (compile-time). Validation is
- * done by hand so nothing needs to be resolved/required at runtime.
+ * Zero external deps and no reliance on global fetch: uses the built-in
+ * node:https module so it runs on any Node version the platform provides.
  *
  * Env (Vercel → Settings → Environment Variables):
  *   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
  */
 
-const TELEGRAM_API_BASE = "https://api.telegram.org";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const KINDS = ["waitlist", "support"] as const;
 const ROLES = ["тренер", "атлет", "не указано"] as const;
@@ -34,7 +32,6 @@ function optionalString(value: unknown): string | undefined {
   return typeof value === "string" && value.length > 0 ? value : undefined;
 }
 
-/** Validates the request body by hand and returns a normalized Lead or null. */
 function parseLead(body: unknown): Lead | null {
   if (typeof body !== "object" || body === null) return null;
   const b = body as Record<string, unknown>;
@@ -95,89 +92,114 @@ function getTelegramConfig(): { botToken: string; chatId: string } | null {
   return { botToken, chatId };
 }
 
-async function sendLeadToTelegram(
+/** Sends the lead to Telegram using node:https. Rejects on non-2xx / network error. */
+function sendLeadToTelegram(
   lead: Lead,
   config: { botToken: string; chatId: string },
 ): Promise<void> {
-  const url = `${TELEGRAM_API_BASE}/bot${config.botToken}/sendMessage`;
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10_000);
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: config.chatId,
-        text: formatLeadMessage(lead),
-        parse_mode: "HTML",
-        disable_web_page_preview: true,
-      }),
-      signal: controller.signal,
+  const payload = JSON.stringify({
+    chat_id: config.chatId,
+    text: formatLeadMessage(lead),
+    parse_mode: "HTML",
+    disable_web_page_preview: true,
+  });
+
+  return new Promise<void>((resolve, reject) => {
+    const req = https.request(
+      {
+        hostname: "api.telegram.org",
+        path: `/bot${config.botToken}/sendMessage`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(payload),
+        },
+        timeout: 10_000,
+      },
+      (res) => {
+        let body = "";
+        res.setEncoding("utf8");
+        res.on("data", (chunk) => {
+          body += chunk;
+        });
+        res.on("end", () => {
+          const status = res.statusCode ?? 0;
+          if (status >= 200 && status < 300) {
+            resolve();
+          } else {
+            reject(new Error(`Telegram responded with ${status}: ${body}`));
+          }
+        });
+      },
+    );
+
+    req.on("error", reject);
+    req.on("timeout", () => {
+      req.destroy(new Error("Telegram request timed out"));
     });
-    if (!response.ok) {
-      const details = await response.text().catch(() => "");
-      throw new Error(
-        `Telegram API responded with ${response.status}: ${details}`,
-      );
-    }
-  } finally {
-    clearTimeout(timeout);
-  }
+    req.write(payload);
+    req.end();
+  });
 }
 
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
 ): Promise<void> {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    res.status(405).json({ error: "Метод не поддерживается." });
-    return;
-  }
-
-  // Vercel parses JSON bodies automatically, but be defensive if it arrives raw.
-  let body: unknown = req.body;
-  if (typeof body === "string") {
-    try {
-      body = JSON.parse(body);
-    } catch {
-      body = undefined;
-    }
-  }
-
-  const lead = parseLead(body);
-  if (!lead) {
-    res
-      .status(400)
-      .json({ error: "Проверьте заполнение формы и попробуйте ещё раз." });
-    return;
-  }
-
-  const config = getTelegramConfig();
-  if (!config) {
-    console.error(
-      "Telegram is not configured (TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID missing)",
-    );
-    res.status(503).json({
-      error:
-        "Отправка временно недоступна. Напишите нам на support@naore.ru — мы ответим.",
-    });
-    return;
-  }
-
   try {
-    await sendLeadToTelegram(lead, config);
-  } catch (err) {
-    console.error("Failed to deliver lead to Telegram", err);
-    res.status(502).json({
-      error:
-        "Не удалось отправить заявку. Попробуйте ещё раз или напишите на support@naore.ru.",
-    });
-    return;
-  }
+    if (req.method !== "POST") {
+      res.setHeader("Allow", "POST");
+      res.status(405).json({ error: "Метод не поддерживается." });
+      return;
+    }
 
-  res.status(201).json({
-    ok: true,
-    message: "Заявка принята. Мы свяжемся с вами в ближайшее время.",
-  });
+    let body: unknown = req.body;
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        body = undefined;
+      }
+    }
+
+    const lead = parseLead(body);
+    if (!lead) {
+      res
+        .status(400)
+        .json({ error: "Проверьте заполнение формы и попробуйте ещё раз." });
+      return;
+    }
+
+    const config = getTelegramConfig();
+    if (!config) {
+      console.error("Telegram not configured (env vars missing)");
+      res.status(503).json({
+        error:
+          "Отправка временно недоступна. Напишите нам на support@naore.ru — мы ответим.",
+      });
+      return;
+    }
+
+    try {
+      await sendLeadToTelegram(lead, config);
+    } catch (err) {
+      console.error("Failed to deliver lead to Telegram", err);
+      res.status(502).json({
+        error:
+          "Не удалось отправить заявку. Попробуйте ещё раз или напишите на support@naore.ru.",
+      });
+      return;
+    }
+
+    res.status(201).json({
+      ok: true,
+      message: "Заявка принята. Мы свяжемся с вами в ближайшее время.",
+    });
+  } catch (err) {
+    // Last-resort guard so the function never returns an unhandled 500.
+    console.error("Unhandled error in /api/lead", err);
+    res
+      .status(500)
+      .json({ error: "Внутренняя ошибка. Напишите на support@naore.ru." });
+  }
 }
