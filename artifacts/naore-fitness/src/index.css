@@ -527,3 +527,81 @@ a.feature-card:hover .fc-more { gap: 9px; }
   .na-ring .fg{stroke-dashoffset:56}
   .js-magnetic,.js-tilt{transition:none}
 }
+
+/* ============================================================
+   Mobile refinement (iPhone SE..Pro Max, Android 360..412 CSS px)
+   ============================================================ */
+
+@media (max-width: 620px) {
+  .section { padding: 68px 0; }
+  .section.tight { padding: 50px 0; }
+  .hero { padding: 30px 0 60px; }
+  .hero h1 { font-size: 2.35rem; line-height: 1.05; letter-spacing: -.035em; }
+  .hero h1 br { display: none; }
+  .hero-sub { font-size: 16px; margin-bottom: 28px; }
+  .hero-badge { margin-bottom: 20px; }
+  .section-title { font-size: 2rem; line-height: 1.06; }
+  .section-head { margin-bottom: 42px; }
+  .statement h2 { font-size: 2.2rem; }
+  .cta-card { padding: 44px 22px; }
+  .cta-card h2 { font-size: 2rem; }
+  .cta-card::before { width: 300px; height: 300px; }
+  .support-title { font-size: 2rem; }
+  .page-intro { padding: 44px 0 34px; }
+  .page-intro h1 { font-size: 2.5rem; }
+  .legal { padding: 24px 0 80px; }
+  .legal h1 { font-size: 2.3rem; }
+  .legal h2 { font-size: 21px; margin: 36px 0 12px; }
+  .lp-top { padding: 26px 0 4px; }
+  .lp-hero h1 { font-size: 2.1rem; }
+  .lp-hero p { font-size: 16px; }
+  .article h1 { font-size: 2rem; }
+  .article .lead { font-size: 17px; }
+  .article p { font-size: 15.5px; }
+  .article h2 { font-size: 21px; margin: 32px 0 10px; }
+  .goal-copy h3 { font-size: 1.7rem; }
+  .goal-copy p { font-size: 15px; }
+  .value-block h3 { font-size: 1.75rem; }
+  .stat-cell { padding: 26px 16px; }
+  .how-step { padding: 22px; }
+  .btn { min-height: 50px; padding: 0 20px; }
+  .topbar { top: 8px; padding: 9px 10px 9px 16px; }
+  .brand { font-size: 18px; }
+  .goal-tabs { gap: 8px; margin: 34px 0 30px; }
+  .goal-tab { padding: 10px 15px; font-size: 13px; }
+  .trust-row { gap: 8px; margin-top: 30px; }
+  .trust-item { font-size: 11.5px; padding: 7px 12px; }
+  .feature-card .fc-body { padding: 20px; }
+  .roadmap-card, .lp-card { padding: 22px; }
+  .footer { padding: 44px 0 30px; }
+  .footer-grid { gap: 26px; }
+  .cookie { left: 12px; right: 12px; bottom: 12px; padding: 16px; }
+}
+
+@media (max-width: 400px) {
+  .container-wide { width: calc(100% - 24px); }
+  .hero h1 { font-size: 2.05rem; }
+  .hero-sub { font-size: 15.5px; }
+  .section-title { font-size: 1.8rem; }
+  .statement h2 { font-size: 1.9rem; }
+  .cta-card h2 { font-size: 1.8rem; }
+  .support-title { font-size: 1.8rem; }
+  .page-intro h1 { font-size: 2.15rem; }
+  .value-block h3 { font-size: 1.55rem; }
+  .goal-copy h3 { font-size: 1.5rem; }
+  .stat-num { font-size: 2.4rem; }
+  .actions { gap: 10px; width: 100%; }
+  .actions .btn, .cta-actions .btn { flex: 1 1 auto; justify-content: center; }
+  .goal-stats { gap: 18px; }
+  .hero-badge { font-size: 11.5px; }
+  .brand-mark { width: 26px; height: 26px; }
+}
+
+@media (max-width: 360px) {
+  .hero h1 { font-size: 1.92rem; }
+  .section-title { font-size: 1.66rem; }
+  .statement h2 { font-size: 1.72rem; }
+  .cta-card h2 { font-size: 1.66rem; }
+  .brand { font-size: 17px; }
+  .btn { font-size: 13px; padding: 0 16px; }
+}
