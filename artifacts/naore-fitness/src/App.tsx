@@ -50,11 +50,11 @@ function Header() {
     <Link href="/" className="brand" data-testid="link-home"><span className="brand-mark"><span>N</span></span> NAORE</Link>
     <button className="mobile-menu" onClick={() => setOpen(!open)} aria-label="Открыть меню" aria-expanded={open} data-testid="button-mobile-menu">{open ? <X size={19} /> : <Menu size={19} />}</button>
     <nav className={`nav ${open ? 'open' : ''}`} aria-label="Основная навигация">
-      <a href="#features" onClick={() => setOpen(false)} data-testid="link-features">Возможности</a>
-      <a href="#for-athletes" onClick={() => setOpen(false)} data-testid="link-athletes">Атлетам</a>
-      <a href="#for-trainers" onClick={() => setOpen(false)} data-testid="link-trainers">Тренерам</a>
-      <a href="#pricing" onClick={() => setOpen(false)} data-testid="link-pricing">Тарифы</a>
-      <a href="#faq" onClick={() => setOpen(false)} data-testid="link-faq">FAQ</a>
+      <a href="/#features" onClick={() => setOpen(false)} data-testid="link-features">Возможности</a>
+      <a href="/#for-athletes" onClick={() => setOpen(false)} data-testid="link-athletes">Атлетам</a>
+      <a href="/#for-trainers" onClick={() => setOpen(false)} data-testid="link-trainers">Тренерам</a>
+      <a href="/#pricing" onClick={() => setOpen(false)} data-testid="link-pricing">Тарифы</a>
+      <a href="/#faq" onClick={() => setOpen(false)} data-testid="link-faq">FAQ</a>
       <Link href="/blog" onClick={() => setOpen(false)} data-testid="link-blog">Блог</Link><a href={REGISTER_CLIENT} className="nav-cta" data-testid="link-register">Начать <ArrowRight size={14} /></a>
     </nav>
   </header>;
@@ -249,7 +249,7 @@ function CookieBanner() {
 }
 
 function Footer() {
-  return <footer className="footer"><div className="container-wide footer-grid"><div><Link href="/" className="brand"><span className="brand-mark"><span>N</span></span> NAORE</Link><p className="footer-note">Платформа, где тренер и атлет работают на результат в одном месте.</p></div><div><h3>Возможности</h3><Link href="/constructor">Конструктор тренировок</Link><Link href="/clients">Ведение клиентов</Link><Link href="/crm">CRM для тренера</Link><Link href="/analytics">Аналитика прогресса</Link><Link href="/progress">Отслеживание прогресса</Link><Link href="/communication">Коммуникация</Link><Link href="/personal-trainer">Персональный тренер</Link><Link href="/online-trainer">Онлайн-тренер</Link><Link href="/workout-diary">Дневник тренировок</Link><Link href="/automation">Автоматизация</Link><Link href="/client">Для клиента</Link><Link href="/online-training">Онлайн-тренировки</Link></div><div><h3>Продукты</h3><a href="#roadmap">AI-Trainer <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Connect <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Shop <span className="badge">Скоро</span></a><a href="#roadmap">NAORE Tematika <span className="badge">Скоро</span></a></div><div><h3>Контакты</h3><Link href="/support">Поддержка</Link><Link href="/blog">Блог</Link><a href="mailto:support@naore.ru">support@naore.ru</a><a href="https://t.me/" target="_blank" rel="noreferrer">Telegram-чат</a><Link href="/legal">Правовая информация</Link></div></div><div className="container-wide footer-bottom"><span>© 2026 NAORE Fitness</span><span>Результат начинается с порядка.</span></div></footer>;
+  return <footer className="footer"><div className="container-wide footer-grid"><div><Link href="/" className="brand"><span className="brand-mark"><span>N</span></span> NAORE</Link><p className="footer-note">Платформа, где тренер и атлет работают на результат в одном месте.</p></div><div><h3>Возможности</h3><Link href="/constructor">Конструктор тренировок</Link><Link href="/clients">Ведение клиентов</Link><Link href="/crm">CRM для тренера</Link><Link href="/analytics">Аналитика прогресса</Link><Link href="/progress">Отслеживание прогресса</Link><Link href="/communication">Коммуникация</Link><Link href="/personal-trainer">Персональный тренер</Link><Link href="/online-trainer">Онлайн-тренер</Link><Link href="/workout-diary">Дневник тренировок</Link><Link href="/automation">Автоматизация</Link><Link href="/client">Для клиента</Link><Link href="/online-training">Онлайн-тренировки</Link></div><div><h3>Продукты</h3><a href="/#roadmap">AI-Trainer <span className="badge">Скоро</span></a><a href="/#roadmap">NAORE Connect <span className="badge">Скоро</span></a><a href="/#roadmap">NAORE Shop <span className="badge">Скоро</span></a><a href="/#roadmap">NAORE Tematika <span className="badge">Скоро</span></a></div><div><h3>Контакты</h3><Link href="/support">Поддержка</Link><Link href="/blog">Блог</Link><a href="mailto:support@naore.ru">support@naore.ru</a><a href="https://t.me/" target="_blank" rel="noreferrer">Telegram-чат</a><Link href="/legal">Правовая информация</Link></div></div><div className="container-wide footer-bottom"><span>© 2026 NAORE Fitness</span><span>Результат начинается с порядка.</span></div></footer>;
 }
 
 function SupportSection() {
@@ -372,7 +372,7 @@ function Router() {
     const html = document.documentElement;
     const prev = html.style.scrollBehavior;
     html.style.scrollBehavior = 'auto';
-    window.scrollTo(0, 0);
+    if (!window.location.hash) window.scrollTo(0, 0);
     html.style.scrollBehavior = prev;
   }, [location]);
   return <ErrorBoundary resetKey={location}><Switch><Route path="/" component={Home} /><Route path="/support" component={SupportPage} /><Route path="/legal" component={LegalPage} /><Route path="/constructor"><ProductLanding page={productPages.constr} /></Route><Route path="/clients"><ProductLanding page={productPages.clients} /></Route><Route path="/crm"><ProductLanding page={productPages.crm} /></Route><Route path="/analytics"><ProductLanding page={productPages.analytics} /></Route><Route path="/progress"><ProductLanding page={productPages.progress} /></Route><Route path="/communication"><ProductLanding page={productPages.communication} /></Route><Route path="/personal-trainer"><ProductLanding page={productPages.personalTrainer} /></Route><Route path="/online-trainer"><ProductLanding page={productPages.onlineTrainer} /></Route><Route path="/workout-diary"><ProductLanding page={productPages.workoutDiary} /></Route><Route path="/automation"><ProductLanding page={productPages.automation} /></Route><Route path="/client"><ProductLanding page={productPages.client} /></Route><Route path="/online-training"><ProductLanding page={productPages.onlineTraining} /></Route><Route path="/blog" component={BlogIndex} /><Route path="/blog/:slug">{(params) => { const post = blogPosts.find((p) => p.slug === params.slug); return post ? <BlogArticle post={post} /> : <NotFound />; }}</Route><Route component={NotFound} /></Switch></ErrorBoundary>;
