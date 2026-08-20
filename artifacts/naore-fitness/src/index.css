@@ -604,3 +604,14 @@ a.feature-card:hover .fc-more { gap: 9px; }
   .brand { font-size: 17px; }
   .btn { font-size: 13px; padding: 0 16px; }
 }
+
+/* Free-for-all block (заменяет тарифы) */
+.free-card{max-width:840px;margin:0 auto;border:1px solid hsl(var(--border-soft));border-radius:26px;background:linear-gradient(160deg,hsl(var(--primary)/.08),hsl(var(--surface)/.7));padding:42px;text-align:center;position:relative;overflow:hidden}
+.free-card::before{content:'';position:absolute;width:440px;height:440px;border-radius:50%;left:50%;top:-62%;transform:translateX(-50%);background:hsl(var(--primary)/.12);filter:blur(72px);pointer-events:none}
+.free-card>*{position:relative}
+.free-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid hsl(var(--primary)/.4);border-radius:999px;color:hsl(var(--primary));font:600 12px var(--app-font-mono);letter-spacing:.05em;margin-bottom:26px}
+.free-list{display:grid;grid-template-columns:1fr 1fr;gap:13px 28px;max-width:640px;margin:0 auto 32px;text-align:left}
+.free-item{display:flex;gap:11px;align-items:center;font-size:15px;color:hsl(var(--foreground))}
+.free-item .value-check{flex:0 0 auto}
+.free-card .cta-actions{justify-content:center}
+@media(max-width:620px){.free-card{padding:30px 22px}.free-list{grid-template-columns:1fr;gap:12px;margin-bottom:26px}}
