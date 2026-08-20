@@ -478,10 +478,9 @@ a.feature-card:hover .fc-more { gap: 9px; }
 /* 10 marquee hover-pause */
 .marquee:hover .marquee-track{animation-play-state:paused}
 /* 16 glowing rotating border */
-.plan.featured{position:relative;isolation:isolate}
-.plan.featured::after{content:'';position:absolute;inset:-1.5px;border-radius:calc(22px + 2px);z-index:-1;background:conic-gradient(from 0deg,transparent 0 58%,hsl(var(--primary)/.9) 76%,transparent 90%);animation:naSpin 4.5s linear infinite}
-.cta-card{isolation:isolate}
-.cta-card::after{content:'';position:absolute;inset:-1.5px;border-radius:calc(30px + 2px);z-index:-1;background:conic-gradient(from 180deg,transparent 0 60%,hsl(var(--primary)/.7) 78%,transparent 92%);animation:naSpin 8s linear infinite}
+.plan.featured{position:relative}
+.plan.featured::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;padding:1.5px;background:conic-gradient(from 0deg,transparent 0 62%,hsl(var(--primary)) 80%,transparent 96%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:naSpin 5s linear infinite}
+.cta-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;padding:1.5px;background:conic-gradient(from 180deg,transparent 0 66%,hsl(var(--primary)) 84%,transparent 97%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:naSpin 9s linear infinite}
 @keyframes naSpin{to{transform:rotate(360deg)}}
 /* 18 live pulse + feed */
 .pulse-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:hsl(var(--primary));margin-right:7px;vertical-align:middle;box-shadow:0 0 0 0 hsl(var(--primary)/.5);animation:naPulse 1.9s infinite}
