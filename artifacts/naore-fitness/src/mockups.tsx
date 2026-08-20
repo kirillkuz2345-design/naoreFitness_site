@@ -62,7 +62,7 @@ export function MockKbju({ ratio = 'wide' }: { ratio?: 'wide' | 'tall' }) {
       <div className="mk-macro"><span>Жиры</span><div className="mk-barline"><i style={{ width: '55%' }} /></div><strong>62 г</strong></div>
       <div className="mk-macro"><span>Углеводы</span><div className="mk-barline"><i style={{ width: '64%' }} /></div><strong>240 г</strong></div>
     </div>
-    <div className="mk-hero" style={{ marginTop: 'auto' }}><span><span className="mk-sub">Осталось сегодня</span><br /><b>620 ккал</b></span><Flame size={16} style={{ color: 'hsl(var(--primary))' }} /></div>
+    <div className="mk-hero" style={{ marginTop: 'auto' }}><span><span className="mk-sub">Осталось сегодня</span><br /><b>620 ккал</b></span><span className="na-ringwrap"><svg className="na-ring" viewBox="0 0 74 74"><circle className="bg" cx="37" cy="37" r="32" /><circle className="fg" cx="37" cy="37" r="32" /></svg><b>72%</b></span></div>
   </MockFrame>;
 }
 

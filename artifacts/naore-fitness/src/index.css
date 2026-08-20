@@ -451,3 +451,79 @@ a.feature-card:hover .fc-more { gap: 9px; }
 .article-related h2 { font: 600 15px var(--app-font-mono); letter-spacing: .08em; text-transform: uppercase; margin: 0 0 16px; }
 @media (max-width: 960px) { .blog-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 640px) { .blog-grid { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   Animations (approved set): reveal, stagger, chart, blob,
+   shimmer, marquee-pause, glow border, pulse+feed, ring,
+   progress bar, magnetic, tilt, parallax, count/odometer, steps
+   ============================================================ */
+/* 1 reveal on scroll */
+[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);will-change:opacity,transform}
+[data-reveal].in{opacity:1;transform:none}
+/* 2 stagger children */
+.st>*{opacity:0;transform:translateY(20px)}
+.st.in>*{animation:naRise .6s cubic-bezier(.2,.7,.2,1) forwards}
+.st.in>*:nth-child(2){animation-delay:.07s}.st.in>*:nth-child(3){animation-delay:.14s}.st.in>*:nth-child(4){animation-delay:.21s}.st.in>*:nth-child(5){animation-delay:.28s}.st.in>*:nth-child(6){animation-delay:.35s}
+@keyframes naRise{to{opacity:1;transform:none}}
+/* 4 chart draw (hero dashboard) */
+.chart-line{stroke-dasharray:1;stroke-dashoffset:1;animation:naDraw 1.7s cubic-bezier(.4,.6,.3,1) forwards .35s}
+@keyframes naDraw{to{stroke-dashoffset:0}}
+/* 8 blob drift */
+.hero::before{animation:naDrift 10s ease-in-out infinite}
+.cta-card::before{animation:naDrift 13s ease-in-out infinite}
+@keyframes naDrift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-34px,26px) scale(1.18)}}
+/* 9 shimmer heading */
+.shimmer{background:linear-gradient(100deg,hsl(var(--primary)) 22%,#e6fff1 50%,hsl(var(--primary)) 78%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:naShine 3.6s linear infinite}
+@keyframes naShine{to{background-position:-220% center}}
+/* 10 marquee hover-pause */
+.marquee:hover .marquee-track{animation-play-state:paused}
+/* 16 glowing rotating border */
+.plan.featured{position:relative;isolation:isolate}
+.plan.featured::after{content:'';position:absolute;inset:-1.5px;border-radius:calc(22px + 2px);z-index:-1;background:conic-gradient(from 0deg,transparent 0 58%,hsl(var(--primary)/.9) 76%,transparent 90%);animation:naSpin 4.5s linear infinite}
+.cta-card{isolation:isolate}
+.cta-card::after{content:'';position:absolute;inset:-1.5px;border-radius:calc(30px + 2px);z-index:-1;background:conic-gradient(from 180deg,transparent 0 60%,hsl(var(--primary)/.7) 78%,transparent 92%);animation:naSpin 8s linear infinite}
+@keyframes naSpin{to{transform:rotate(360deg)}}
+/* 18 live pulse + feed */
+.pulse-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:hsl(var(--primary));margin-right:7px;vertical-align:middle;box-shadow:0 0 0 0 hsl(var(--primary)/.5);animation:naPulse 1.9s infinite}
+@keyframes naPulse{0%{box-shadow:0 0 0 0 hsl(var(--primary)/.45)}70%{box-shadow:0 0 0 10px hsl(var(--primary)/0)}100%{box-shadow:0 0 0 0 hsl(var(--primary)/0)}}
+.in .mk-client{opacity:0;transform:translateX(-10px);animation:naSlideIn .5s ease forwards}
+.in .mk-client:nth-child(2){animation-delay:.12s}.in .mk-client:nth-child(3){animation-delay:.24s}.in .mk-client:nth-child(4){animation-delay:.36s}.in .mk-client:nth-child(5){animation-delay:.48s}
+@keyframes naSlideIn{to{opacity:1;transform:none}}
+/* 20 progress ring draw */
+.na-ring{width:74px;height:74px;flex:0 0 auto}
+.na-ring circle{fill:none;stroke-width:9}
+.na-ring .bg{stroke:hsl(var(--surface-2))}
+.na-ring .fg{stroke:hsl(var(--primary));stroke-linecap:round;stroke-dasharray:201;stroke-dashoffset:201;transform:rotate(-90deg);transform-origin:center;animation:naRing 1.4s ease forwards .3s}
+@keyframes naRing{to{stroke-dashoffset:56}}
+.na-ringwrap{position:relative;display:grid;place-items:center}
+.na-ringwrap b{position:absolute;font:600 16px var(--app-font-display);color:hsl(var(--foreground))}
+/* 19 scroll progress bar */
+.scroll-progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;background:linear-gradient(90deg,hsl(var(--primary-strong)),hsl(var(--primary)));box-shadow:0 0 12px hsl(var(--primary)/.6);transition:width .08s linear}
+/* 6 magnetic / 7 tilt */
+.js-magnetic{will-change:transform;transition:transform .18s cubic-bezier(.2,.7,.2,1)}
+.js-tilt{will-change:transform;transition:transform .12s ease;transform-style:preserve-3d}
+/* 11 steps */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px}
+.how-step{border:1px solid hsl(var(--border-soft));border-radius:18px;background:hsl(var(--surface)/.6);padding:26px;transition:border-color .35s ease,background .35s ease}
+.how-step.act{border-color:hsl(var(--primary)/.55);background:linear-gradient(160deg,hsl(var(--primary)/.08),hsl(var(--surface)/.7))}
+.how-num{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font:600 18px var(--app-font-display);background:hsl(var(--surface-2));color:hsl(var(--muted-foreground));transition:.35s}
+.how-step.act .how-num{background:hsl(var(--primary));color:hsl(var(--primary-foreground))}
+.how-step h3{font:600 18px var(--app-font-display);letter-spacing:-.02em;margin:16px 0 8px}
+.how-step p{color:hsl(var(--muted-foreground));font-size:14px;line-height:1.55;margin:0}
+/* 15 stats band (odometer) */
+.stats-band{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.stat-cell{text-align:center;border:1px solid hsl(var(--border));border-radius:18px;background:hsl(var(--surface)/.5);padding:30px 18px}
+.stat-num{font:600 clamp(2.4rem,5vw,3.4rem) var(--app-font-display);letter-spacing:-.04em;color:hsl(var(--primary));line-height:1;display:inline-flex;align-items:baseline}
+.stat-num small{color:hsl(var(--foreground));font-size:.5em;margin-left:2px}
+.stat-cell span{display:block;color:hsl(var(--muted-foreground));font-size:14px;margin-top:12px}
+@media(max-width:820px){.how,.stats-band{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){
+  [data-reveal],[data-reveal].in{opacity:1!important;transform:none!important;transition:none!important}
+  .st>*{opacity:1!important;transform:none!important;animation:none!important}
+  .chart-line{stroke-dashoffset:0;animation:none}
+  .hero::before,.cta-card::before,.shimmer,.plan.featured::after,.cta-card::after,.pulse-dot,.in .mk-client,.na-ring .fg{animation:none!important}
+  .shimmer{-webkit-text-fill-color:hsl(var(--primary));color:hsl(var(--primary))}
+  .in .mk-client{opacity:1;transform:none}
+  .na-ring .fg{stroke-dashoffset:56}
+  .js-magnetic,.js-tilt{transition:none}
+}

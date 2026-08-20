@@ -63,12 +63,12 @@ function Header() {
 function ProductPreview() {
   return <div className="product-visual" aria-label="Предпросмотр аналитики NAORE">
     <div className="app-frame">
-      <div className="app-top"><span className="app-logo">NAORE / DASHBOARD</span><span className="app-status">СИСТЕМА В СЕТИ</span></div>
+      <div className="app-top"><span className="app-logo">NAORE / DASHBOARD</span><span className="app-status"><span className="pulse-dot" />СИСТЕМА В СЕТИ</span></div>
       <div className="app-body">
         <aside className="app-side" aria-hidden="true"><div className="side-pill active" /><div className="side-pill" /><div className="side-pill" /><div className="side-pill" /><div className="side-pill" /></aside>
         <div className="app-main">
           <div className="app-greeting">СРЕДА, 24 АПРЕЛЯ</div><div className="app-big">Ваш прогресс</div>
-          <div className="metric-row"><div className="metric"><span>ТРЕНИРОВКИ</span><strong>18 <b>+3</b></strong></div><div className="metric"><span>ВЫПОЛНЕНО</span><strong>86% <b>+8%</b></strong></div></div>
+          <div className="metric-row"><div className="metric"><span>ТРЕНИРОВКИ</span><strong><span data-count="18">0</span> <b>+3</b></strong></div><div className="metric"><span>ВЫПОЛНЕНО</span><strong><span data-count="86" data-suffix="%">0</span> <b>+8%</b></strong></div></div>
           <div className="chart"><div className="chart-head"><strong>Нагрузка за неделю</strong><span>Последние 7 дней</span></div><svg viewBox="0 0 400 120" role="img" aria-label="График роста нагрузки"><path className="chart-grid" d="M0 25H400M0 60H400M0 95H400" /><path className="chart-area" d="M0 94L58 79L115 83L172 50L230 61L285 32L340 44L400 15V120H0Z" /><path className="chart-line" d="M0 94L58 79L115 83L172 50L230 61L285 32L340 44L400 15" /></svg></div>
           <div className="next-workout"><span>СЛЕДУЮЩАЯ ТРЕНИРОВКА<strong>Ноги / сила</strong></span><ArrowRight size={17} /></div>
         </div>
@@ -78,7 +78,7 @@ function ProductPreview() {
 }
 
 function HeroVisual() {
-  return <div className="hero-visual">
+  return <div className="hero-visual js-parallax">
     <div className="float-card float-a"><span className="fc-ico"><Flame size={17} /></span><span><span className="fc-label">Серия</span><span className="fc-value">12 дней</span></span></div>
     <div className="float-card float-b"><span className="fc-ico"><TrendingUp size={17} /></span><span><span className="fc-label">Прогресс</span><span className="fc-value">+8% за неделю</span></span></div>
     <div className="float-card float-c"><span className="fc-ico"><Dumbbell size={17} /></span><span><span className="fc-label">Тренировка</span><span className="fc-value">Ноги / сила</span></span></div>
@@ -108,7 +108,7 @@ function GoalTabs() {
     <div className="goal-tabs" role="tablist">
       {goals.map((g, i) => <button key={g.key} role="tab" aria-selected={i === index} className={`goal-tab ${i === index ? 'active' : ''}`} onClick={() => setIndex(i)} data-testid={`tab-goal-${g.key}`}>{g.tab}</button>)}
     </div>
-    <div className="goal-panel">
+    <div className="goal-panel" data-reveal>
       <div className="goal-copy">
         <h3>{goal.title}</h3>
         <p>{goal.copy}</p>
@@ -131,7 +131,7 @@ const trainerValues = ['Конструктор тренировок', 'Един�
 const athleteValues = ['Персональная программа от тренера', 'Трекер тренировок и архив', 'Аналитика результатов по неделям', 'Калькулятор КБЖУ', 'Офлайн-доступ (PWA)'];
 
 function ValueBlock({ role, title, values, action, href, media, link, reverse = false }: { role: string; title: string; values: string[]; action: string; href: string; media: ReactNode; link?: [string, string]; reverse?: boolean }) {
-  return <div className={`value-block ${reverse ? 'reverse' : ''}`}>
+  return <div data-reveal className={`value-block ${reverse ? 'reverse' : ''}`}>
     <div className="value-media">{media}</div>
     <div className="value-body">
       <span className="value-role">{role}</span>
@@ -149,7 +149,7 @@ const reviews = [
 ];
 
 function Reviews() {
-  return <div className="reviews-track">
+  return <div className="reviews-track st">
     {reviews.map((r) => <div className="review-card" key={r.name}>
       <div className="review-stars" aria-label="5 из 5">{[0, 1, 2, 3, 4].map((s) => <Star key={s} size={15} fill="currentColor" strokeWidth={0} />)}</div>
       <p className="review-text">{r.text}</p>
@@ -165,7 +165,7 @@ const plans = [
 ];
 
 function Pricing() {
-  return <div className="pricing-grid">
+  return <div className="pricing-grid st">
     {plans.map((p) => <div className={`plan ${p.featured ? 'featured' : ''}`} key={p.name}>
       <div className="plan-name">{p.name}{p.featured && <span className="badge">Популярно</span>}</div>
       <div className="plan-price">{p.price} {p.note && <small>{p.note}</small>}</div>
@@ -253,7 +253,7 @@ function Footer() {
 }
 
 function SupportSection() {
-  return <section className="section" id="support"><div className="container-wide support-card"><div><span className="eyebrow">Служба поддержки</span><h2 className="support-title">Мы рядом на каждом шаге</h2><p className="section-copy">Отвечаем в течение 24 часов. Поможем тренерам с переносом клиентов.</p><div className="contact-lines"><a className="contact-line" href="mailto:support@naore.ru"><Headphones size={16} /> support@naore.ru</a><a className="contact-line" href="https://t.me/" target="_blank" rel="noreferrer"><MessageCircle size={16} /> Telegram-чат</a><Link className="contact-line" href="/support"><Database size={16} /> FAQ и база знаний <ArrowRight size={14} /></Link></div></div><SupportForm /></div></section>;
+  return <section className="section" id="support"><div className="container-wide support-card" data-reveal><div><span className="eyebrow">Служба поддержки</span><h2 className="support-title">Мы рядом на каждом шаге</h2><p className="section-copy">Отвечаем в течение 24 часов. Поможем тренерам с переносом клиентов.</p><div className="contact-lines"><a className="contact-line" href="mailto:support@naore.ru"><Headphones size={16} /> support@naore.ru</a><a className="contact-line" href="https://t.me/" target="_blank" rel="noreferrer"><MessageCircle size={16} /> Telegram-чат</a><Link className="contact-line" href="/support"><Database size={16} /> FAQ и база знаний <ArrowRight size={14} /></Link></div></div><SupportForm /></div></section>;
 }
 
 function Home() {
@@ -262,9 +262,9 @@ function Home() {
     <section className="hero grid-lines"><div className="container-wide hero-grid">
       <div>
         <div className="hero-badge"><b>NEW</b> Платформа для фитнес-тренеров</div>
-        <h1>Всё для работы тренера<br />с клиентами — <em>в одном месте.</em></h1>
+        <h1>Всё для работы тренера<br />с клиентами — <em className="shimmer">в одном месте.</em></h1>
         <p className="hero-sub">Создавайте тренировки, ведите клиентов, отслеживайте прогресс и общайтесь — в одном сервисе. Без хаоса в мессенджерах.</p>
-        <div className="actions" id="start"><a href={REGISTER_TRAINER} className="btn btn-primary" data-testid="button-start-free">Попробовать бесплатно <ArrowRight size={16} /></a><a href={REGISTER_CLIENT} className="btn btn-ghost" data-testid="button-trainer-cabinet">Я атлет — тренироваться</a></div>
+        <div className="actions" id="start"><a href={REGISTER_TRAINER} className="btn btn-primary js-magnetic" data-testid="button-start-free">Попробовать бесплатно <ArrowRight size={16} /></a><a href={REGISTER_CLIENT} className="btn btn-ghost" data-testid="button-trainer-cabinet">Я атлет — тренироваться</a></div>
         <div className="trust-row"><span className="trust-item"><span className="trust-dot" /> Данные под защитой (RLS)</span><span className="trust-item"><span className="trust-dot" /> Работает офлайн (PWA)</span><span className="trust-item"><span className="trust-dot" /> Русскоязычная платформа</span></div>
       </div>
       <HeroVisual />
@@ -272,13 +272,15 @@ function Home() {
 
     <Marquee />
 
-    <section className="section statement"><div className="container-wide"><span className="eyebrow" style={{ justifyContent: 'center' }}>Один рабочий процесс</span><h2>Тренировки, клиенты и прогресс — <em>в одном рабочем пространстве.</em></h2></div></section>
+    <section className="section statement"><div className="container-wide"><span className="eyebrow" style={{ justifyContent: 'center' }}>Один рабочий процесс</span><h2 data-reveal>Тренировки, клиенты и прогресс — <em className="shimmer">в одном рабочем пространстве.</em></h2></div></section>
 
-    <section className="section tight" id="goals"><div className="container-wide"><div className="section-head"><span className="eyebrow">Определите свою цель</span><h2 className="section-title">Одна платформа — под любую задачу</h2></div><GoalTabs /></div></section>
+    <section className="section tight" id="goals"><div className="container-wide"><div className="section-head" data-reveal><span className="eyebrow">Определите свою цель</span><h2 className="section-title">Одна платформа — под любую задачу</h2></div><GoalTabs /></div></section>
 
-    <section className="section band" id="features"><div className="container-wide"><div className="section-head"><span className="eyebrow">Возможности</span><h2 className="section-title">Всё для системной тренировки</h2><p className="section-copy">Конструктор, аналитика, чат и календарь — в одном кабинете, а не в десяти приложениях.</p></div>
-      <div className="feature-grid">{features.map((f) => { const Icon = f.icon; return <Link className="feature-card" href={f.href} key={f.title} data-testid={`feature-${f.href}`}><f.Mock ratio="wide" /><div className="fc-body"><span className="value-check" style={{ marginBottom: 14 }}><Icon size={14} /></span><h3>{f.title}</h3><p>{f.copy}</p><span className="fc-more">Подробнее <ArrowRight size={13} /></span></div></Link>; })}</div>
+    <section className="section band" id="features"><div className="container-wide"><div className="section-head" data-reveal><span className="eyebrow">Возможности</span><h2 className="section-title">Всё для системной тренировки</h2><p className="section-copy">Конструктор, аналитика, чат и календарь — в одном кабинете, а не в десяти приложениях.</p></div>
+      <div className="feature-grid st">{features.map((f) => { const Icon = f.icon; return <Link className="feature-card js-tilt" href={f.href} key={f.title} data-testid={`feature-${f.href}`}><f.Mock ratio="wide" /><div className="fc-body"><span className="value-check" style={{ marginBottom: 14 }}><Icon size={14} /></span><h3>{f.title}</h3><p>{f.copy}</p><span className="fc-more">Подробнее <ArrowRight size={13} /></span></div></Link>; })}</div>
     </div></section>
+
+    <section className="section tight"><div className="container-wide"><div className="stats-band"><div className="stat-cell"><span className="stat-num"><span data-odo="500">0</span><small>+</small></span><span>упражнений в конструкторе</span></div><div className="stat-cell"><span className="stat-num"><span data-odo="20">0</span><small>+</small></span><span>клиентов в одном кабинете</span></div><div className="stat-cell"><span className="stat-num"><span data-odo="24">0</span><small> ч</small></span><span>ответ поддержки</span></div></div></div></section>
 
     <section className="section" id="for-athletes"><div className="container-wide">
       <ValueBlock role="Для атлетов" title="Понятный план, видимый прогресс, поддержка тренера" values={athleteValues} action="Начать тренироваться" href={REGISTER_CLIENT} media={<MockAthlete />} />
@@ -288,7 +290,7 @@ function Home() {
     </div></section>
 
     <section className="section" id="trainer-constructor"><div className="container-wide">
-      <div className="goal-panel">
+      <div className="goal-panel" data-reveal>
         <div className="goal-copy">
           <span className="value-role">Конструктор тренировок</span>
           <h3>Конструктор тренировок для тренера</h3>
@@ -305,12 +307,14 @@ function Home() {
       </div>
     </div></section>
 
-    <section className="section" id="reviews"><div className="container-wide"><div className="section-head"><span className="eyebrow">Отзывы</span><h2 className="section-title">Что говорят пользователи</h2></div><Reviews /></div></section>
+    <section className="section" id="how"><div className="container-wide"><div className="section-head" data-reveal><span className="eyebrow">Как это работает</span><h2 className="section-title">Три шага до системной работы</h2></div><div className="how js-steps"><div className="how-step act"><span className="how-num">1</span><h3>Зарегистрируйтесь</h3><p>Выберите роль тренера или атлета и создайте профиль за минуту.</p></div><div className="how-step"><span className="how-num">2</span><h3>Соберите план</h3><p>Тренер собирает программу в конструкторе, атлет получает персональный план.</p></div><div className="how-step"><span className="how-num">3</span><h3>Ведите к результату</h3><p>Тренируйтесь, отслеживайте прогресс и общайтесь — всё в NAORE.</p></div></div></div></section>
 
-    <section className="section band" id="pricing"><div className="container-wide"><div className="section-head"><span className="eyebrow">Тарифы</span><h2 className="section-title">Начните бесплатно</h2><p className="section-copy">Старт — бесплатно. Расширенные тарифы для атлетов и тренеров — на подходе.</p></div><Pricing /></div></section>
+    <section className="section" id="reviews"><div className="container-wide"><div className="section-head" data-reveal><span className="eyebrow">Отзывы</span><h2 className="section-title">Что говорят пользователи</h2></div><Reviews /></div></section>
+
+    <section className="section band" id="pricing"><div className="container-wide"><div className="section-head" data-reveal><span className="eyebrow">Тарифы</span><h2 className="section-title">Начните бесплатно</h2><p className="section-copy">Старт — бесплатно. Расширенные тарифы для атлетов и тренеров — на подходе.</p></div><Pricing /></div></section>
 
     <section className="section" id="roadmap"><div className="container-wide"><div className="roadmap-head"><span className="eyebrow" style={{ justifyContent: 'center' }}>Дорожная карта</span><h2 className="section-title" style={{ marginInline: 'auto' }}>NAORE растёт — скоро в экосистеме</h2><p className="section-copy">Оставьте почту — узнаете первыми и получите ранний доступ.</p></div>
-      <div className="roadmap-grid">
+      <div className="roadmap-grid st">
         <div className="roadmap-card"><span className="badge">Скоро</span><h3>AI-Trainer</h3><p>ИИ-тренер на базе особенностей вашего организма и целей подбирает эффективные упражнения под ваши тренировки.</p><LeadForm product="AI-Trainer" /></div>
         <div className="roadmap-card"><span className="badge">Скоро</span><h3>NAORE Connect</h3><p>Отслеживайте показатели со спортивных аксессуаров — пульсометры, GPS-мониторинг атлета и другие датчики.</p><LeadForm product="NAORE Connect" /></div>
         <div className="roadmap-card"><span className="badge">Скоро</span><h3>NAORE Shop</h3><p>Спортивное питание от партнёров, прошедшее лабораторную проверку под нашим контролем.</p><LeadForm product="NAORE Shop" /></div>
@@ -318,17 +322,17 @@ function Home() {
       </div>
     </div></section>
 
-    <section className="section band" id="faq"><div className="container-wide"><div className="section-head"><span className="eyebrow">FAQ</span><h2 className="section-title">Коротко о главном</h2></div><FAQ /></div></section>
+    <section className="section band" id="faq"><div className="container-wide"><div className="section-head" data-reveal><span className="eyebrow">FAQ</span><h2 className="section-title">Коротко о главном</h2></div><FAQ /></div></section>
 
     <SupportSection />
 
-    <section className="section" id="final-cta"><div className="container-wide"><div className="cta-card"><span className="eyebrow" style={{ justifyContent: 'center' }}>Следующий подход</span><h2>Готовы тренироваться и вести клиентов по-новому?</h2><div className="cta-actions"><a href={REGISTER_CLIENT} className="btn btn-primary" data-testid="button-final-start">Начать бесплатно <ArrowRight size={16} /></a><a href={REGISTER_TRAINER} className="btn btn-ghost" data-testid="button-final-trainer">Стать тренером</a></div></div></div></section>
+    <section className="section" id="final-cta"><div className="container-wide"><div className="cta-card" data-reveal><span className="eyebrow" style={{ justifyContent: 'center' }}>Следующий подход</span><h2>Готовы тренироваться и вести клиентов по-новому?</h2><div className="cta-actions"><a href={REGISTER_CLIENT} className="btn btn-primary js-magnetic" data-testid="button-final-start">Начать бесплатно <ArrowRight size={16} /></a><a href={REGISTER_TRAINER} className="btn btn-ghost" data-testid="button-final-trainer">Стать тренером</a></div></div></div></section>
   </main><Footer /><CookieBanner /></div>;
 }
 
 function SupportPage() {
   usePageMeta('Поддержка NAORE Fitness — помощь тренерам и атлетам', 'Поддержка NAORE Fitness, FAQ и форма обратной связи для тренеров и атлетов.');
-  return <div className="site-shell noise"><Header /><main><div className="container-wide page-intro"><span className="eyebrow" style={{ justifyContent: 'center' }}>NAORE / Поддержка</span><h1>Разберёмся. <span>Без лишних слов.</span></h1><p className="section-copy">Мы рядом на каждом шаге. Отвечаем в течение 24 часов.</p></div><section className="section tight"><div className="container-wide support-card"><div><span className="eyebrow">Форма обратной связи</span><h2 className="support-title">Есть вопрос? Напишите нам.</h2><p className="section-copy">Выберите роль, опишите тему и мы вернёмся с ответом.</p><div className="contact-lines"><a className="contact-line" href="mailto:support@naore.ru"><Headphones size={16} /> support@naore.ru</a><a className="contact-line" href="https://t.me/" target="_blank" rel="noreferrer"><MessageCircle size={16} /> Telegram-чат</a><span className="contact-line"><Clock3 size={16} /> Отвечаем в течение 24 часов</span></div></div><SupportForm /></div></section><section className="section band"><div className="container-wide"><div className="section-head"><span className="eyebrow">FAQ / база знаний</span><h2 className="section-title">Ответы на частые вопросы</h2></div><FAQ /></div></section></main><Footer /><CookieBanner /></div>;
+  return <div className="site-shell noise"><Header /><main><div className="container-wide page-intro"><span className="eyebrow" style={{ justifyContent: 'center' }}>NAORE / Поддержка</span><h1>Разберёмся. <span>Без лишних слов.</span></h1><p className="section-copy">Мы рядом на каждом шаге. Отвечаем в течение 24 часов.</p></div><section className="section tight"><div className="container-wide support-card" data-reveal><div><span className="eyebrow">Форма обратной связи</span><h2 className="support-title">Есть вопрос? Напишите нам.</h2><p className="section-copy">Выберите роль, опишите тему и мы вернёмся с ответом.</p><div className="contact-lines"><a className="contact-line" href="mailto:support@naore.ru"><Headphones size={16} /> support@naore.ru</a><a className="contact-line" href="https://t.me/" target="_blank" rel="noreferrer"><MessageCircle size={16} /> Telegram-чат</a><span className="contact-line"><Clock3 size={16} /> Отвечаем в течение 24 часов</span></div></div><SupportForm /></div></section><section className="section band"><div className="container-wide"><div className="section-head" data-reveal><span className="eyebrow">FAQ / база знаний</span><h2 className="section-title">Ответы на частые вопросы</h2></div><FAQ /></div></section></main><Footer /><CookieBanner /></div>;
 }
 
 function LegalPage() {
@@ -365,6 +369,72 @@ function LegalPage() {
   </main><Footer /><CookieBanner /></div>;
 }
 
+
+function useSiteFx() {
+  const [location] = useLocation();
+  useEffect(() => {
+    const cleanups: Array<() => void> = [];
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // 19 scroll progress bar
+    let bar = document.querySelector('.scroll-progress') as HTMLElement | null;
+    if (!bar) { bar = document.createElement('div'); bar.className = 'scroll-progress'; document.body.appendChild(bar); }
+    const onScroll = () => { const h = document.documentElement; const max = h.scrollHeight - h.clientHeight; if (bar) bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%'; };
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+    cleanups.push(() => window.removeEventListener('scroll', onScroll));
+
+    // 1/2 reveal + stagger
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
+    document.querySelectorAll('[data-reveal], .st').forEach((el) => { if (reduce) el.classList.add('in'); else io.observe(el); });
+    cleanups.push(() => io.disconnect());
+
+    // 3/15 count-up + odometer
+    const cio = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return; const el = e.target as HTMLElement; cio.unobserve(el);
+      const to = parseFloat(el.dataset.count || el.dataset.odo || '0'); const suffix = el.dataset.suffix || '';
+      if (reduce) { el.textContent = to + suffix; return; }
+      const dur = 1300; const start = performance.now();
+      const tick = (n: number) => { const p = Math.min(1, (n - start) / dur); el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))) + suffix; if (p < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    }), { threshold: 0.6 });
+    document.querySelectorAll<HTMLElement>('[data-count], [data-odo]').forEach((el) => cio.observe(el));
+    cleanups.push(() => cio.disconnect());
+
+    if (!reduce) {
+      // 6 magnetic
+      document.querySelectorAll<HTMLElement>('.js-magnetic').forEach((el) => {
+        const mm = (e: MouseEvent) => { const r = el.getBoundingClientRect(); el.style.transform = 'translate(' + ((e.clientX - r.left - r.width / 2) * 0.25) + 'px,' + ((e.clientY - r.top - r.height / 2) * 0.4) + 'px)'; };
+        const ml = () => { el.style.transform = ''; };
+        el.addEventListener('mousemove', mm); el.addEventListener('mouseleave', ml);
+        cleanups.push(() => { el.removeEventListener('mousemove', mm); el.removeEventListener('mouseleave', ml); });
+      });
+      // 7 tilt
+      document.querySelectorAll<HTMLElement>('.js-tilt').forEach((el) => {
+        const mm = (e: MouseEvent) => { const r = el.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - 0.5; const y = (e.clientY - r.top) / r.height - 0.5; el.style.transform = 'perspective(800px) rotateY(' + (x * 6) + 'deg) rotateX(' + (-y * 6) + 'deg)'; };
+        const ml = () => { el.style.transform = ''; };
+        el.addEventListener('mousemove', mm); el.addEventListener('mouseleave', ml);
+        cleanups.push(() => { el.removeEventListener('mousemove', mm); el.removeEventListener('mouseleave', ml); });
+      });
+      // 5 parallax (hero device shifts with cursor)
+      document.querySelectorAll<HTMLElement>('.js-parallax').forEach((box) => {
+        const dev = box.querySelector('.product-visual') as HTMLElement | null; if (!dev) return;
+        const mm = (e: MouseEvent) => { const r = box.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - 0.5; const y = (e.clientY - r.top) / r.height - 0.5; dev.style.transform = 'translate(' + (x * 12) + 'px,' + (y * 12) + 'px)'; };
+        const ml = () => { dev.style.transform = ''; };
+        box.addEventListener('mousemove', mm); box.addEventListener('mouseleave', ml);
+        cleanups.push(() => { box.removeEventListener('mousemove', mm); box.removeEventListener('mouseleave', ml); });
+      });
+      // 11 steps cycle
+      document.querySelectorAll<HTMLElement>('.js-steps').forEach((wrap) => {
+        const steps = wrap.querySelectorAll<HTMLElement>('.how-step'); if (!steps.length) return; let i = 0;
+        const id = window.setInterval(() => { i = (i + 1) % steps.length; steps.forEach((sEl, k) => sEl.classList.toggle('act', k === i)); }, 1600);
+        cleanups.push(() => clearInterval(id));
+      });
+    }
+
+    return () => cleanups.forEach((c) => c());
+  }, [location]);
+}
+
 function Router() {
   const [location] = useLocation();
   useEffect(() => {
@@ -375,6 +445,7 @@ function Router() {
     if (!window.location.hash) window.scrollTo(0, 0);
     html.style.scrollBehavior = prev;
   }, [location]);
+  useSiteFx();
   return <ErrorBoundary resetKey={location}><Switch><Route path="/" component={Home} /><Route path="/support" component={SupportPage} /><Route path="/legal" component={LegalPage} /><Route path="/constructor"><ProductLanding page={productPages.constr} /></Route><Route path="/clients"><ProductLanding page={productPages.clients} /></Route><Route path="/crm"><ProductLanding page={productPages.crm} /></Route><Route path="/analytics"><ProductLanding page={productPages.analytics} /></Route><Route path="/progress"><ProductLanding page={productPages.progress} /></Route><Route path="/communication"><ProductLanding page={productPages.communication} /></Route><Route path="/personal-trainer"><ProductLanding page={productPages.personalTrainer} /></Route><Route path="/online-trainer"><ProductLanding page={productPages.onlineTrainer} /></Route><Route path="/workout-diary"><ProductLanding page={productPages.workoutDiary} /></Route><Route path="/automation"><ProductLanding page={productPages.automation} /></Route><Route path="/client"><ProductLanding page={productPages.client} /></Route><Route path="/online-training"><ProductLanding page={productPages.onlineTraining} /></Route><Route path="/blog" component={BlogIndex} /><Route path="/blog/:slug">{(params) => { const post = blogPosts.find((p) => p.slug === params.slug); return post ? <BlogArticle post={post} /> : <NotFound />; }}</Route><Route component={NotFound} /></Switch></ErrorBoundary>;
 }
 
@@ -600,18 +671,18 @@ function ProductLanding({ page }: { page: (typeof productPages)[string] }) {
         <span className="eyebrow">{page.eyebrow}</span>
         <h1>{page.h1}</h1>
         <p>{page.intro}</p>
-        <a href={page.ctaHref} className="btn btn-primary" data-testid="lp-cta">{page.ctaLabel} <ArrowRight size={16} /></a>
+        <a href={page.ctaHref} className="btn btn-primary js-magnetic" data-testid="lp-cta">{page.ctaLabel} <ArrowRight size={16} /></a>
       </div>
       <div>{page.mock}</div>
     </div></section>
     <section className="section band"><div className="container-wide">
-      <div className="lp-sections">{page.sections.map(([h2, body]) => <div className="lp-card" key={h2}><span className="value-check" style={{ marginBottom: 12 }}><Check size={13} /></span><h3>{h2}</h3><p>{body}</p></div>)}</div>
+      <div className="lp-sections st">{page.sections.map(([h2, body]) => <div className="lp-card" key={h2}><span className="value-check" style={{ marginBottom: 12 }}><Check size={13} /></span><h3>{h2}</h3><p>{body}</p></div>)}</div>
     </div></section>
     <section className="section"><div className="container-wide">
-      <div className="section-head"><span className="eyebrow">Смотрите также</span><h2 className="section-title">Соседние возможности</h2></div>
+      <div className="section-head" data-reveal><span className="eyebrow">Смотрите также</span><h2 className="section-title">Соседние возможности</h2></div>
       <div className="lp-related">{page.related.map(([label, href]) => <Link key={href} href={href}>{label} <ArrowRight size={14} /></Link>)}</div>
     </div></section>
-    <section className="section" id="final-cta"><div className="container-wide"><div className="cta-card"><span className="eyebrow" style={{ justifyContent: 'center' }}>NAORE</span><h2>{page.h1}</h2><div className="cta-actions"><a href={page.ctaHref} className="btn btn-primary">{page.ctaLabel} <ArrowRight size={16} /></a><a href="/" className="btn btn-ghost">На главную</a></div></div></div></section>
+    <section className="section" id="final-cta"><div className="container-wide"><div className="cta-card" data-reveal><span className="eyebrow" style={{ justifyContent: 'center' }}>NAORE</span><h2>{page.h1}</h2><div className="cta-actions"><a href={page.ctaHref} className="btn btn-primary">{page.ctaLabel} <ArrowRight size={16} /></a><a href="/" className="btn btn-ghost">На главную</a></div></div></div></section>
   </main><Footer /><CookieBanner /></div>;
 }
 
@@ -870,7 +941,7 @@ function BlogArticle({ post }: { post: (typeof blogPosts)[number] }) {
       <h1>{post.h1}</h1>
       <p className="lead">{post.lead}</p>
       {post.sections.map(([h2, body]) => <div key={h2}><h2>{h2}</h2><p>{body}</p></div>)}
-      <div className="article-cta"><h3>{post.cta.title}</h3><p>{post.cta.text}</p><Link href={post.cta.href} className="btn btn-primary" data-testid="article-cta">{post.cta.label} <ArrowRight size={16} /></Link></div>
+      <div className="article-cta"><h3>{post.cta.title}</h3><p>{post.cta.text}</p><Link href={post.cta.href} className="btn btn-primary js-magnetic" data-testid="article-cta">{post.cta.label} <ArrowRight size={16} /></Link></div>
       <div className="article-related"><h2>Читайте также</h2><div className="lp-related" style={{ justifyContent: 'flex-start' }}>{post.related.map(([label, href]) => <Link key={href} href={href}>{label} <ArrowRight size={14} /></Link>)}</div></div>
     </article>
   </main><Footer /><CookieBanner /></div>;
@@ -879,6 +950,6 @@ function BlogArticle({ post }: { post: (typeof blogPosts)[number] }) {
 function BlogIndex() {
   usePageMeta('Блог для фитнес-тренеров — NAORE', 'Практические статьи для фитнес-тренеров: ведение клиентов, программы тренировок, аналитика прогресса, автоматизация и коммуникация.');
   return <div className="site-shell noise"><Header /><main><div className="container-wide page-intro"><span className="eyebrow" style={{ justifyContent: 'center' }}>Блог</span><h1>Блог для <span>фитнес-тренеров</span></h1><p className="section-copy" style={{ marginInline: 'auto' }}>Практика: как вести клиентов, составлять программы, отслеживать прогресс и автоматизировать рутину.</p></div>
-    <section className="section tight"><div className="container-wide"><div className="blog-grid">{blogPosts.map((p) => <Link key={p.slug} className="blog-card" href={`/blog/${p.slug}`} data-testid={`blog-card-${p.slug}`}><span className="b-cluster">{p.cluster}</span><h3>{p.h1}</h3><p>{p.description}</p><span className="b-more">Читать <ArrowRight size={13} /></span></Link>)}</div></div></section>
+    <section className="section tight"><div className="container-wide"><div className="blog-grid st">{blogPosts.map((p) => <Link key={p.slug} className="blog-card" href={`/blog/${p.slug}`} data-testid={`blog-card-${p.slug}`}><span className="b-cluster">{p.cluster}</span><h3>{p.h1}</h3><p>{p.description}</p><span className="b-more">Читать <ArrowRight size={13} /></span></Link>)}</div></div></section>
   </main><Footer /><CookieBanner /></div>;
 }
