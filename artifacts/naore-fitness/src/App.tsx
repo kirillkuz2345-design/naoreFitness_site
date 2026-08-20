@@ -6,6 +6,7 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
+import { Analytics } from '@vercel/analytics/react';
 import { MockAnalytics, MockAthlete, MockAvatar, MockCalendar, MockChat, MockConstructor, MockHistory, MockKbju, MockTrainer } from './mockups';
 
 const queryClient = new QueryClient();
@@ -450,7 +451,7 @@ function Router() {
 }
 
 function App() {
-  return <QueryClientProvider client={queryClient}><TooltipProvider><WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}><Router /></WouterRouter><Toaster /></TooltipProvider></QueryClientProvider>;
+  return <QueryClientProvider client={queryClient}><TooltipProvider><WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}><Router /></WouterRouter><Toaster /><Analytics /></TooltipProvider></QueryClientProvider>;
 }
 
 export default App;
